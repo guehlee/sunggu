@@ -1,0 +1,96 @@
+@font-face {
+  font-family: "TimesNewArial";
+  src: url("../fonts/TimesNewArialVF.woff2");
+  font-variation-settings: "srff" 0, "ital" 0, "wght" 50;
+}
+
+/* Reset CSS */
+
+html, body {
+  background: #fff;
+  z-index: 1;
+  font-size: 1vw;
+  padding: 0;
+  margin: 0;
+  font-family: "TimesNewArial";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.mobile-only {
+  display: none;
+}
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
+a, button, input, label {
+  cursor: pointer
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Your CSS */
+
+h1{
+  font-size: 2vw;
+  line-height: 2.2vw;
+  font-weight: normal;
+  margin: 1vw;
+}
+
+
+@media (max-width: 768px) {
+  body {
+    background-color: #85f965;
+  }
+
+  #info {
+    background-color: teal;
+  }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  body {
+    background-color: #1911a3;
+  }
+
+  #info {
+    background-color: darkred;
+  }
+}
+
+
+
+
+/* Media Queries */
+
+@media screen and (max-width:500px){
+  .box{
+    background: blue;
+  }
+}
