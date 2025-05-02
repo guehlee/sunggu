@@ -7,49 +7,87 @@
 /* Reset CSS */
 
 html, body {
-  background: #fff;
-  z-index: 1;
-  font-size: 1vw;
-  padding: 0;
-  margin: 0;
-  font-family: "TimesNewArial";
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-a, button, input, label {
-  cursor: pointer
-}
-
-*, *:after, *:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* disables scrolling */
 }
 
-ul, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.project-canvas {
+  width: 100vw;
+  height: 100vh;
+  background-color: aqua;
+  display: flex; /* optional: enables easy content centering */
+  justify-content: center; /* optional */
+  align-items: center; /* optional */
 }
 
-h1{
-  font-size: 2vw;
-  line-height: 2.2vw;
-  font-weight: normal;
-  margin: 1vw;
+.project {
+  width: 100vw;
+  height: 100vh;
+  background-color: aqua;
+  display: flex; /* optional: enables easy content centering */
+  justify-content: center; /* optional */
+  align-items: center; /* optional */
 }
 
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -70%; /* hidden initially */
+  width: 70%;
+  height: 100vh;
+  background-color: rgb(255, 2, 2);
+  display: flex;
+  transition: right 0.4s ease-in-out;
+  z-index: 1000;
+}
 
- /* Mobile-Version */
-@media (max-width: 768px) {
-  body {
-    background-color: #85f965;
-  }
+.sidebar.show {
+  right: 0;
+}
 
-  #info {
-    background-color: teal;
-  }
+.sidebar-left, .sidebar-right {
+  width: 50%;
+  height: 100%;
+  overflow: auto; /* scroll inside the sections if needed */
+}
+
+.sidebar-left {
+  background-color: blue;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-right {
+  background-color: blueviolet;
+}
+
+.video {
+  width: 100%;
+  height: 40%;
+  background-color: green;
+  flex-shrink: 0;
+}
+
+.text {
+  width: 100%;
+  height: auto;
+  display: flex;
+  overflow: hidden;
+}
+
+.korean, .english {
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.korean {
+  background-color: chocolate;
+}
+
+.english {
+  background-color: indianred;
 }
