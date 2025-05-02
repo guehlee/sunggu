@@ -32,7 +32,6 @@ html, body {
   align-items: center; /* optional */
 }
 
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -92,6 +91,3 @@ html, body {
 .english {
   background-color: indianred;
 }
-
-
-
