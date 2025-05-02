@@ -17,23 +17,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.mobile-only {
-  display: none;
-}
-.desktop-only {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .mobile-only {
-    display: block;
-  }
-  .desktop-only {
-    display: none;
-  }
-}
-
 a, button, input, label {
   cursor: pointer
 }
@@ -52,8 +35,6 @@ ul, li {
   padding: 0;
 }
 
-/* Your CSS */
-
 h1{
   font-size: 2vw;
   line-height: 2.2vw;
@@ -61,7 +42,12 @@ h1{
   margin: 1vw;
 }
 
+.thumbnail{
 
+}
+
+
+ /* Mobile-Version */
 @media (max-width: 768px) {
   body {
     background-color: #85f965;
@@ -69,27 +55,5 @@ h1{
 
   #info {
     background-color: teal;
-  }
-}
-
-/* Desktop */
-@media (min-width: 769px) {
-  body {
-    background-color: #1911a3;
-  }
-
-  #info {
-    background-color: darkred;
-  }
-}
-
-
-
-
-/* Media Queries */
-
-@media screen and (max-width:500px){
-  .box{
-    background: blue;
   }
 }
