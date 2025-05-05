@@ -72,6 +72,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // //LEADERLINE–––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+document.addEventListener("DOMContentLoaded", function () {
+  const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
+  const minDistance = 120;
+  const placedPositions = [];
+  const previousPosition = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+  // Positionierung
+  thumbnails.forEach((thumb) => {
+    const width = thumb.offsetWidth || 80;
+    const height = thumb.offsetHeight || 80;
+    let position = null;
+    let attempts = 0;
+    let valid = false;
+
+    while (!valid && attempts < 100) {
+      position = getRandomPositionWithinBounds(previousPosition, width, height);
+      valid = checkNoOverlapWithPlaced(position, placedPositions, minDistance, width, height);
+      attempts++;
+    }
+
+    if (position) {
+      setPosition(thumb, position);
+      placedPositions.push({ ...position, width, height });
+    }
+  });
+
+  // Linien nach Positionierung zeichnen
+  setTimeout(() => {
+    const lineStyle = {
+      color: '#000',
+      size: 3,
+      path: 'straight',
+      endPlug: 'disc',
+      startPlug: 'disc',
+
+      dropShadow: false,
+      animation: false,
+    };
+
+    // Dynamisch alle Thumbnails nacheinander verbinden
+    for (let i = 0; i < thumbnails.length - 1; i++) {
+      new LeaderLine(
+        thumbnails[i],
+        thumbnails[i + 1],
+        { ...lineStyle, startSocket: 'bottom', endSocket: 'top' }
+      );
+    }
+  }, 200); // sicherstellen, dass Positionen gesetzt sind
+});
+
+
 // // create Lines (startpiont, Endpoint)
 //   const myLine = new LeaderLine(, , { ...lineStyle, endSocket: 'top' });
 //   isdragged = false
@@ -97,14 +149,16 @@ document.addEventListener("DOMContentLoaded", function () {
 // // RANDOM PLACEMENT–––––––––––––––––––––––––––––––––––––––––––––––––––––––
 document.addEventListener("DOMContentLoaded", function () {
   const thumbnails = document.querySelectorAll(".thumbnail");
-  const minDistance = 120; // Mindestabstand in Pixeln
+  const minDistance = 50; // Mindestabstand zwischen Thumbnails in px
 
   let previousPosition = {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2
   };
 
-  thumbnails.forEach((thumb, index) => {
+  const placedPositions = [];
+
+  thumbnails.forEach((thumb) => {
     const thumbWidth = thumb.offsetWidth || 80;
     const thumbHeight = thumb.offsetHeight || 80;
 
@@ -112,14 +166,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let attempts = 0;
     let position = null;
 
-    while (!validPosition && attempts < 50) {
+    while (!validPosition && attempts < 100) {
       position = getRandomPositionWithinBounds(previousPosition, thumbWidth, thumbHeight);
-      validPosition = checkNoOverlap(position, thumbnails, minDistance, thumbWidth, thumbHeight);
+      validPosition = checkNoOverlapWithPlaced(position, placedPositions, minDistance, thumbWidth, thumbHeight);
       attempts++;
     }
 
     if (position) {
       setPosition(thumb, position);
+      placedPositions.push({ ...position, width: thumbWidth, height: thumbHeight });
       previousPosition = position;
     }
   });
@@ -128,75 +183,43 @@ document.addEventListener("DOMContentLoaded", function () {
 function getRandomPositionWithinBounds(prev, width, height) {
   const spreadX = 0.4 * window.innerWidth;
   const spreadY = 0.4 * window.innerHeight;
+  const edgePadding = 80;
 
   const halfWidth = width / 2;
   const halfHeight = height / 2;
-  const edgePadding = 20; // Mindestabstand zum Rand
 
   const minX = halfWidth + edgePadding;
   const maxX = window.innerWidth - halfWidth - edgePadding;
   const minY = halfHeight + edgePadding;
   const maxY = window.innerHeight - halfHeight - edgePadding;
 
-  let newX = prev.x + getRandomValue(spreadX / 2);
-  let newY = prev.y + getRandomValue(spreadY / 2);
+  let newX = prev.x + getRandomValue(spreadX);
+  let newY = prev.y + getRandomValue(spreadY);
 
   newX = Math.max(minX, Math.min(newX, maxX));
   newY = Math.max(minY, Math.min(newY, maxY));
 
   return { x: newX, y: newY };
 }
-
 
 function getRandomValue(range = 20) {
   return Math.random() * (range * 2) - range;
 }
 
-function getRandomPositionWithinBounds(prev, width, height) {
-  const spreadX = 0.4 * window.innerWidth;
-  const spreadY = 0.4 * window.innerHeight;
-
-  const halfWidth = width / 2;
-  const halfHeight = height / 2;
-  const edgePadding = 80; // <-- Diese Zeile ist entscheidend
-
-  const minX = halfWidth + edgePadding;
-  const maxX = window.innerWidth - halfWidth - edgePadding;
-  const minY = halfHeight + edgePadding;
-  const maxY = window.innerHeight - halfHeight - edgePadding;
-
-  let newX = prev.x + getRandomValue(spreadX / 2);
-  let newY = prev.y + getRandomValue(spreadY / 2);
-
-  newX = Math.max(minX, Math.min(newX, maxX));
-  newY = Math.max(minY, Math.min(newY, maxY));
-
-  return { x: newX, y: newY };
-}
-
-
-function setPosition(element, position) {
-  const width = element.offsetWidth;
-  const height = element.offsetHeight;
-  element.style.position = 'absolute';
-  element.style.left = `${position.x - width / 2}px`;
-  element.style.top = `${position.y - height / 2}px`;
-}
-
-function checkNoOverlap(pos, thumbnails, minDist, width, height) {
+function checkNoOverlapWithPlaced(pos, placed, minDist, width, height) {
   const buffer = minDist / 2;
 
-  for (let thumb of thumbnails) {
-    if (!thumb.offsetParent) continue; // Noch nicht im DOM
-    const rect = thumb.getBoundingClientRect();
-
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+  for (let p of placed) {
+    const centerX = p.x;
+    const centerY = p.y;
 
     const distX = Math.abs(pos.x - centerX);
     const distY = Math.abs(pos.y - centerY);
 
-    if (distX < rect.width / 2 + width / 2 + buffer && distY < rect.height / 2 + height / 2 + buffer) {
+    if (
+      distX < p.width / 2 + width / 2 + buffer &&
+      distY < p.height / 2 + height / 2 + buffer
+    ) {
       return false;
     }
   }
@@ -204,6 +227,23 @@ function checkNoOverlap(pos, thumbnails, minDist, width, height) {
   return true;
 }
 
+function setPosition(element, position) {
+  const width = element.offsetWidth;
+  const height = element.offsetHeight;
+
+  // RANDOM ROTATION–––––––––––––(could be deleted)––––––––––––––––––––––––––––––––––––––––––
+  const rotation = getRandomRotation(); // Neue Funktion unten
+
+  element.style.position = 'absolute';
+  element.style.left = `${position.x - width / 2}px`;
+  element.style.top = `${position.y - height / 2}px`;
+
+  element.style.transform = `rotate(${rotation}deg)`;
+}
+
+function getRandomRotation() {
+  return Math.random() * 30 - 15; // ergibt -15° bis +15°
+}
 
 
 
