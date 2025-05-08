@@ -58,6 +58,19 @@ html, body {
 
 /* SIDEBAR */
 
+.thumbnail {
+  width: 8vw;
+  overflow: hidden;
+  display: block;
+  margin: 2vw;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -65,7 +78,7 @@ html, body {
   width: 70%;
   height: 100vh;
   display: flex;
-  transition: right 0.4s ease-in-out;
+  transition: right 0.3s ease-in-out;
   z-index: 1000;
 }
 
@@ -199,3 +212,5 @@ html, body {
 .image::-webkit-scrollbar-thumb {
   background-color: #000000;
 }
+
+
