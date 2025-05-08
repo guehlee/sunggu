@@ -103,10 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     const lineStyle = {
       color: '#000',
-      size: 3,
+      size: 2.5,
       path: 'straight',
-      endPlug: 'disc',
-      startPlug: 'disc',
+      endPlug: 'none',
+      startPlug: 'none',
 
       dropShadow: false,
       animation: false,
@@ -238,7 +238,7 @@ function setPosition(element, position) {
   element.style.left = `${position.x - width / 2}px`;
   element.style.top = `${position.y - height / 2}px`;
 
-  element.style.transform = `rotate(${rotation}deg)`;
+  // element.style.transform = `rotate(${rotation}deg)`;
 }
 
 function getRandomRotation() {
