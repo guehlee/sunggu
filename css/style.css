@@ -1,10 +1,31 @@
 @font-face {
-  font-family: "TimesNewArial";
-  src: url("../fonts/TimesNewArialVF.woff2");
-  font-variation-settings: "srff" 0, "ital" 0, "wght" 50;
+  font-family: "Freeserif";
+  src: url(/fonts/FreeSerif.woff2) format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* Reset CSS */
+@font-face {
+  font-family: "Freeserif";
+  src: url(/fonts/FreeSerifItalic.woff2) format("woff2");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "NanumMyeongjo";
+  src: url(/fonts/NanumMyeongjo.woff2) format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NanumMyeongjo";
+  src: url(/fonts/NanumMyeongjoBold.woff2) format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
 
 html, body {
   margin: 0;
@@ -12,12 +33,14 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden; /* disables scrolling */
+
+  font-family: "Freeserif";
 }
 
 .project-canvas {
   width: 100vw;
   height: 100vh;
-  background-color: aqua;
+  background-color: #ffffff;
   display: flex; /* optional: enables easy content centering */
   justify-content: center; /* optional */
   align-items: center; /* optional */
@@ -26,19 +49,21 @@ html, body {
 .project {
   width: 100vw;
   height: 100vh;
-  background-color: aqua;
+  background-color: #ffffff;
   display: flex; /* optional: enables easy content centering */
   justify-content: center; /* optional */
   align-items: center; /* optional */
 }
 
+
+/* SIDEBAR */
+
 .sidebar {
   position: fixed;
   top: 0;
-  right: -70%; /* hidden initially */
+  right: -70%; 
   width: 70%;
   height: 100vh;
-  background-color: rgb(255, 2, 2);
   display: flex;
   transition: right 0.4s ease-in-out;
   z-index: 1000;
@@ -51,43 +76,126 @@ html, body {
 .sidebar-left, .sidebar-right {
   width: 50%;
   height: 100%;
-  overflow: auto; /* scroll inside the sections if needed */
+  overflow: auto; 
 }
 
 .sidebar-left {
-  background-color: blue;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .sidebar-right {
-  background-color: blueviolet;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid;
+  border-top: none;
+}
+
+.image {
+  flex-grow: 1;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.image img {
+  width: 96%;
+  padding-top: 10px;
+}
+
+.description {
+  padding: 10px;
+  border-bottom: 1px solid;
+
+  cursor: pointer;
+}
+
+.description-credit {
+  display: none;
+  margin-top: 10px;
+}
+
+.description-credit.visible {
+  display: block;
 }
 
 .video {
   width: 100%;
-  height: 40%;
-  background-color: green;
-  flex-shrink: 0;
+  position: relative;
+  display: none;
+  padding-top: 56.25%;
+
+  background-color: #ffffff;
+  border: 1px solid;
+  border-top: none;
+}
+
+.video.active {
+  display: block;
+}
+
+.video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .text {
-  width: 100%;
-  height: auto;
+  flex-grow: 1;
   display: flex;
   overflow: hidden;
 }
 
 .korean, .english {
+  padding: 0 10px;
   width: 50%;
   height: 100%;
-  overflow-y: auto;
+  background-color: #ffffff;
+
+  border: 1px solid;
+  border-top: none;
+  border-right: none;
 }
 
 .korean {
-  background-color: chocolate;
+  font-family: "NanumMyeongjo", serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 1.4rem;
 }
 
 .english {
-  background-color: indianred;
+  font-family: "Freeserif", serif;  
+  font-size: 1.1rem;
+  line-height: 1.3rem;
+}
+
+
+/* SCROLL BAR */
+
+.korean, .english, .image {
+  overflow-y: scroll;
+}
+
+.korean::-webkit-scrollbar,
+.english::-webkit-scrollbar {
+  width: 4px;
+}
+
+.image::-webkit-scrollbar {
+  width: 5px;
+}
+
+.korean::-webkit-scrollbar-thumb,
+.english::-webkit-scrollbar-thumb,
+.image::-webkit-scrollbar-thumb {
+  background-color: #000000;
 }
