@@ -32,6 +32,19 @@ html, body {
   align-items: center; /* optional */
 }
 
+.thumbnail {
+  width: 8vw;
+  overflow: hidden;
+  display: block;
+  margin: 2vw;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -40,7 +53,7 @@ html, body {
   height: 100vh;
   background-color: rgb(255, 2, 2);
   display: flex;
-  transition: right 0.4s ease-in-out;
+  transition: right 0.3s ease-in-out;
   z-index: 1000;
 }
 
@@ -82,6 +95,7 @@ html, body {
   width: 50%;
   height: 100%;
   overflow-y: auto;
+  padding: 1vw;
 }
 
 .korean {
@@ -91,3 +105,5 @@ html, body {
 .english {
   background-color: indianred;
 }
+
+
