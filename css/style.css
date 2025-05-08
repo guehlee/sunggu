@@ -97,6 +97,7 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-x: hidden;
 }
 
 .sidebar-right {
@@ -105,6 +106,7 @@ html, body {
   background-color: #ffffff;
   border: 1px solid;
   border-top: none;
+  overflow-x: hidden;
 }
 
 .image {
@@ -122,20 +124,39 @@ html, body {
 }
 
 .description {
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-bottom: 1px solid;
+  padding: 10px;
+  padding-top: 19px;
+}
 
-  cursor: pointer;
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: default;
+}
+
+.title, .arrow {
+  line-height: 1;
 }
 
 .description-credit {
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
   margin-top: 10px;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 
-.description-credit.visible {
-  display: block;
+.description:hover .description-credit {
+  max-height: 500px; /* must be greater than actual content height */
+  opacity: 1;
 }
+
 
 .video {
   width: 100%;
@@ -193,11 +214,12 @@ html, body {
 
 
 /* SCROLL BAR */
-
 .korean, .english, .image {
   overflow-y: scroll;
+  overflow-x: hidden; 
 }
 
+/* WebKit browsers (Chrome, Safari, Edge) */
 .korean::-webkit-scrollbar,
 .english::-webkit-scrollbar {
   width: 4px;
@@ -213,4 +235,53 @@ html, body {
   background-color: #000000;
 }
 
+.korean::-webkit-scrollbar-track,
+.english::-webkit-scrollbar-track,
+.image::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 
+
+/* ABOUT PAGE */
+.about{
+  font-family: "Freeserif";
+  font-size: 128pt;
+  line-height: 120pt;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.trans-word {
+  position: relative;
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.trans-word::after {
+  content: attr(data-translation);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: black;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  filter: blur(9px);
+
+
+  font-family: "NanumMyeongjoBold";
+  font-size: 110pt;
+  line-height: 160pt;
+}
+
+.trans-word:hover {
+  color: transparent;
+}
+
+.trans-word:hover::after {
+  opacity: 1;
+  filter: blur(0);
+}

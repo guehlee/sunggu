@@ -41,19 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// DESCRIPTION CREDIT OPEN –––––––––––––––––––––––––––––––––––––––––
-document.addEventListener("DOMContentLoaded", function () {
-  const title = document.getElementById("toggleCredit");
-  const creditBox = document.getElementById("creditBox");
-
-  if (title && creditBox) {
-    title.addEventListener("click", function () {
-      const isVisible = creditBox.classList.toggle("visible");
-      title.textContent = isVisible ? "Lizard Tale ▲" : "Lizard Tale ▼";
-    });
-  }
-});
-
 // ARRAYS AND PROJECTS––––––––––––––––––––––––––––––––––––––––––––––
 // (RENAME the variables and classes accordingly)
 
