@@ -41,6 +41,29 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// CLICK FUNCTION FOR ABOUT PAGE ––––––––––––––––––––––––––––––––––
+
+document.addEventListener("DOMContentLoaded", function () {
+  const about = document.querySelector(".about");
+  const aboutDetail = document.getElementById("aboutDetail");
+
+  if (about && aboutDetail) {
+    about.addEventListener("click", function () {
+      aboutDetail.classList.toggle("show");
+    });
+
+    document.addEventListener("click", function (e) {
+      if (
+        aboutDetail.classList.contains("show") &&
+        !aboutDetail.contains(e.target) &&
+        !about.contains(e.target)
+      ) {
+        aboutDetail.classList.remove("show");
+      }
+    });
+  }
+});
+
 // ARRAYS AND PROJECTS––––––––––––––––––––––––––––––––––––––––––––––
 // (RENAME the variables and classes accordingly)
 
