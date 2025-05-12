@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     title.addEventListener("click", function () {
       const isVisible = creditBox.classList.toggle("visible");
       title.textContent = isVisible ? "Lizard Tale ▲" : "Lizard Tale ▼";
+
     });
   }
 

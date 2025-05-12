@@ -99,6 +99,7 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-x: hidden;
 }
 
 .sidebar-right {
@@ -107,6 +108,7 @@ html, body {
   background-color: #ffffff;
   border: 1px solid;
   border-top: none;
+  overflow-x: hidden;
 }
 
 .image {
@@ -124,20 +126,39 @@ html, body {
 }
 
 .description {
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-bottom: 1px solid;
+  padding: 10px;
+  padding-top: 19px;
+}
 
-  cursor: pointer;
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: default;
+}
+
+.title, .arrow {
+  line-height: 1;
 }
 
 .description-credit {
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
   margin-top: 10px;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 
-.description-credit.visible {
-  display: block;
+.description:hover .description-credit {
+  max-height: 500px; /* must be greater than actual content height */
+  opacity: 1;
 }
+
 
 .video {
   width: 100%;
@@ -195,17 +216,22 @@ html, body {
 
 
 /* SCROLL BAR */
-
 .korean, .english, .image {
   overflow-y: scroll;
   /* Firefox only */
   scrollbar-width: thin;
   scrollbar-color: #000000 transparent;
+  overflow-x: hidden; 
 }
 
+/* WebKit browsers (Chrome, Safari, Edge) */
 .korean::-webkit-scrollbar,
 .english::-webkit-scrollbar {
   width: 4px;
+}
+
+.about-detail::-webkit-scrollbar {
+  height: 4px;
 }
 
 .image::-webkit-scrollbar {
@@ -214,20 +240,65 @@ html, body {
 
 .korean::-webkit-scrollbar-thumb,
 .english::-webkit-scrollbar-thumb,
-.image::-webkit-scrollbar-thumb {
+.image::-webkit-scrollbar-thumb,
+.about-detail::-webkit-scrollbar-thumb {
   background-color: #000000;
 }
 
+.korean::-webkit-scrollbar-track,
+.english::-webkit-scrollbar-track,
+.image::-webkit-scrollbar-track,
+.about-detail::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 
+
+/* ABOUT PAGE */
 .about{
-  /* position: absolute;
-  top: 1vh; */
-
   font-family: "Freeserif";
   font-size: 128pt;
   line-height: 120pt;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  overflow-x: auto;
+
   z-index: 1;
-  
+}
+
+.trans-word {
+  position: relative;
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.trans-word::after {
+  content: attr(data-translation);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: black;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  filter: blur(9px);
+
+
+  font-family: "NanumMyeongjoBold";
+  font-size: 110pt;
+  line-height: 160pt;
+}
+
+.trans-word:hover {
+  color: transparent;
+}
+
+.trans-word:hover::after {
+  opacity: 1;
+  filter: blur(0);
 }
 
 .back{
@@ -237,3 +308,98 @@ html, body {
   z-index: 2;
 }
 
+=======
+.about-detail {
+  position: fixed;
+  left: 0;
+  bottom: -80%; 
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  transition: bottom 0.4s ease-in-out;
+  border-top: 1px solid black;
+  background-color: #ffffff;
+  overflow-x: auto;
+  z-index: 1000;
+
+  display: flex;
+  min-width: 100vw;
+}
+
+.about-detail p {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.3rem;
+}
+
+.about-detail.show {
+  bottom: 0;
+}
+
+.about-text,
+.about-exhibition,
+.about-cv {
+  flex-shrink: 0;
+}
+
+.about-text {
+  width: 50vw;
+  border-right: 1px solid #000000;
+  font-size: 2rem;
+  margin-left: 10px;
+  position: relative;
+}
+
+.about-english,
+.about-korean {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 98%;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.about-english {
+  opacity: 1;
+  filter: blur(0px);
+  z-index: 2;
+  line-height: 2.4rem;
+}
+
+.about-korean {
+  font-family: "NanumMyeongjo", serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+
+  opacity: 0;
+  filter: blur(6px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.about-text:hover .about-english {
+  opacity: 0;
+  filter: blur(6px);
+}
+
+.about-text:hover .about-korean {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+.about-exhibition {
+  width: 40vw;
+  border-right: 1px solid #000000;
+  overflow-y: auto;
+}
+
+.about-cv {
+  width: 40vw;
+  overflow-y: auto;
+}
+
+.about-title {
+  padding: 10px;
+  border-bottom: 1px solid #000000;
+}
