@@ -278,7 +278,7 @@ body:has(.sidebar.show) .about{
   top: 10px;
   left: 10px;
   cursor: pointer;
-  overflow-x: auto;
+  overflow: none;
 
   z-index: 4;
 }
