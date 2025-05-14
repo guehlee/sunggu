@@ -7,20 +7,20 @@ $(document).ready(function () {
   let isClicked = false;
   let isMoving = false;
 
-  $('.thumbnail')
-    .on('mousedown', function () {
+  $(".thumbnail")
+    .on("mousedown", function () {
       isClicked = true;
       console.log("clicking?:" + isClicked);
       return isClicked;
     })
-    .on('mousemove', function () {
+    .on("mousemove", function () {
       if (isClicked) {
         isMoving = true;
       }
       console.log("moving?:" + isMoving);
       return isMoving;
     })
-    .on('mouseup', function (event) {
+    .on("mouseup", function (event) {
       if (!isMoving) {
         document.querySelector(".sidebar").classList.add("show");
         event.stopPropagation();
@@ -30,30 +30,30 @@ $(document).ready(function () {
       console.log("mouseup - reset states");
     })
     .draggable({
-      containment: 'body',
+      containment: "body",
       distance: 5,
 
       start: function (event, ui) {
         if (!isMoving) {
-          console.log('Not moving – drag prevented.');
+          console.log("Not moving – drag prevented.");
           return false; // ❌ Drag wird NICHT gestartet
         }
       },
 
       drag: function () {
-        console.log('Dragging...');
-        leaderLines.forEach(line => line.position()); // 🔁 LeaderLines live aktualisieren
+        console.log("Dragging...");
+        leaderLines.forEach((line) => line.position()); // 🔁 LeaderLines live aktualisieren
       },
 
       stop: function (event, ui) {
-        console.log('Stopped at', ui.position);
-        leaderLines.forEach(line => line.position()); // 🔁 LeaderLines erneut aktualisieren
-      }
+        console.log("Stopped at", ui.position);
+        leaderLines.forEach((line) => line.position()); // 🔁 LeaderLines erneut aktualisieren
+      },
     });
 });
 
+// VIDEO DETECTION
 document.addEventListener("DOMContentLoaded", function () {
-  // VIDEO DETECTION
   const videoContainer = document.getElementById("videoContainer");
   if (videoContainer?.querySelector("iframe")) {
     videoContainer.classList.add("active");
@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
     title.addEventListener("click", function () {
       const isVisible = creditBox.classList.toggle("visible");
       title.textContent = isVisible ? "Lizard Tale ▲" : "Lizard Tale ▼";
-
     });
   }
 
@@ -74,7 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
   const minDistance = 120;
   const placedPositions = [];
-  const previousPosition = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const previousPosition = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+  };
 
   thumbnails.forEach((thumb) => {
     const width = thumb.offsetWidth || 80;
@@ -85,7 +87,16 @@ document.addEventListener("DOMContentLoaded", function () {
     do {
       position = getRandomPositionWithinBounds(previousPosition, width, height);
       attempts++;
-    } while (!checkNoOverlapWithPlaced(position, placedPositions, minDistance, width, height) && attempts < 100);
+    } while (
+      !checkNoOverlapWithPlaced(
+        position,
+        placedPositions,
+        minDistance,
+        width,
+        height
+      ) &&
+      attempts < 100
+    );
 
     if (position) {
       setPosition(thumb, position);
@@ -105,10 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
         startPlug: "behind",
         dropShadow: false,
         animation: false,
-        startSocket: "right",   // oder "bottom", "left", "right"
+        startSocket: "right", // oder "bottom", "left", "right"
         endSocket: "top",
-
-        
       });
       leaderLines.push(line);
     }
@@ -116,8 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // LeaderLines bei Fenstergröße neu berechnen
-window.addEventListener('resize', () => {
-  leaderLines.forEach(line => line.position());
+window.addEventListener("resize", () => {
+  leaderLines.forEach((line) => line.position());
 });
 
 // HILFSFUNKTIONEN ––––––––––––––––––––––––––––––––––––––––
@@ -133,8 +142,14 @@ function getRandomPositionWithinBounds(prev, width, height) {
   let newX = prev.x + getRandomValue(spreadX);
   let newY = prev.y + getRandomValue(spreadY);
 
-  newX = Math.max(halfWidth + edgePadding, Math.min(newX, window.innerWidth - halfWidth - edgePadding));
-  newY = Math.max(halfHeight + edgePadding, Math.min(newY, window.innerHeight - halfHeight - edgePadding));
+  newX = Math.max(
+    halfWidth + edgePadding,
+    Math.min(newX, window.innerWidth - halfWidth - edgePadding)
+  );
+  newY = Math.max(
+    halfHeight + edgePadding,
+    Math.min(newY, window.innerHeight - halfHeight - edgePadding)
+  );
 
   return { x: newX, y: newY };
 }
@@ -145,9 +160,10 @@ function getRandomValue(range = 20) {
 
 function checkNoOverlapWithPlaced(pos, placed, minDist, width, height) {
   const buffer = minDist / 2;
-  return placed.every(p =>
-    Math.abs(pos.x - p.x) >= (p.width + width) / 2 + buffer ||
-    Math.abs(pos.y - p.y) >= (p.height + height) / 2 + buffer
+  return placed.every(
+    (p) =>
+      Math.abs(pos.x - p.x) >= (p.width + width) / 2 + buffer ||
+      Math.abs(pos.y - p.y) >= (p.height + height) / 2 + buffer
   );
 }
 
@@ -171,5 +187,58 @@ projectCanvas.addEventListener("click", function (event) {
   if (sidebar.classList.contains("show")) {
     sidebar.classList.remove("show");
     event.stopPropagation();
+  }
+});
+
+// // CLICK FUNCTION FOR SIDEBAR–––––––––––––––––––––––––––––––––––––––
+// document.addEventListener("DOMContentLoaded", function () {
+//   const thumbnails = document.querySelectorAll(".openSidebar");
+//   const sidebar = document.querySelector(".sidebar");
+
+//   if (thumbnails.length > 0 && sidebar) {
+//     thumbnails.forEach((thumb) => {
+//       thumb.addEventListener("click", function (event) {
+//         sidebar.classList.add("show");
+//         event.stopPropagation(); // Verhindert Schließen durch Außenklick
+//       });
+//     });
+
+//     // Sidebar schließen bei Klick außerhalb
+//     document.addEventListener("click", function (event) {
+//       if (
+//         sidebar.classList.contains("show") &&
+//         !sidebar.contains(event.target)
+//       ) {
+//         sidebar.classList.remove("show");
+//       }
+//     });
+
+//     // Klicks innerhalb der Sidebar nicht als Außenklick zählen
+//     sidebar.addEventListener("click", function (event) {
+//       event.stopPropagation();
+//     });
+//   }
+// });
+
+//ABOUT PAGE OPEN –––––––––––––––––––––––––––––––––––––––
+document.addEventListener("DOMContentLoaded", function () {
+  const about = document.querySelector(".about");
+  const aboutDetail = document.getElementById("aboutDetail");
+
+  if (about && aboutDetail) {
+    about.addEventListener("click", function () {
+      aboutDetail.classList.toggle("show");
+    });
+
+    // Optional: close when clicking outside
+    document.addEventListener("click", function (e) {
+      if (
+        aboutDetail.classList.contains("show") &&
+        !aboutDetail.contains(e.target) &&
+        !about.contains(e.target)
+      ) {
+        aboutDetail.classList.remove("show");
+      }
+    });
   }
 });

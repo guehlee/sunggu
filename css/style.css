@@ -63,8 +63,20 @@ html, body {
   overflow: hidden;
   display: block;
   margin: 2vw;
-  z-index: 3;
-  padding-top: 1vw;
+  z-index: 10;
+
+  transition: box-shadow 0.3s ease, transform 0.1s ease;
+}
+
+.thumbnail:hover{
+  width: 8vw;
+  overflow: hidden;
+  display: block;
+  margin: 2vw;
+  box-shadow: 0 0 40px 10px rgb(0, 0, 0);
+  transform: scale(1.03);
+
+  z-index: 10;
 }
 
 .thumbnail img {
@@ -82,6 +94,10 @@ html, body {
   display: flex;
   transition: right 0.3s ease-in-out;
   z-index: 1000;
+}
+
+body:has(.sidebar.show) .about{
+  pointer-events: none;
 }
 
 .sidebar.show {
@@ -264,7 +280,7 @@ html, body {
   cursor: pointer;
   overflow-x: auto;
 
-  z-index: 1;
+  z-index: 4;
 }
 
 .trans-word {
@@ -308,7 +324,6 @@ html, body {
   z-index: 2;
 }
 
-=======
 .about-detail {
   position: fixed;
   left: 0;
