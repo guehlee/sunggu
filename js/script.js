@@ -190,36 +190,6 @@ projectCanvas.addEventListener("click", function (event) {
   }
 });
 
-// // CLICK FUNCTION FOR SIDEBAR–––––––––––––––––––––––––––––––––––––––
-// document.addEventListener("DOMContentLoaded", function () {
-//   const thumbnails = document.querySelectorAll(".openSidebar");
-//   const sidebar = document.querySelector(".sidebar");
-
-//   if (thumbnails.length > 0 && sidebar) {
-//     thumbnails.forEach((thumb) => {
-//       thumb.addEventListener("click", function (event) {
-//         sidebar.classList.add("show");
-//         event.stopPropagation(); // Verhindert Schließen durch Außenklick
-//       });
-//     });
-
-//     // Sidebar schließen bei Klick außerhalb
-//     document.addEventListener("click", function (event) {
-//       if (
-//         sidebar.classList.contains("show") &&
-//         !sidebar.contains(event.target)
-//       ) {
-//         sidebar.classList.remove("show");
-//       }
-//     });
-
-//     // Klicks innerhalb der Sidebar nicht als Außenklick zählen
-//     sidebar.addEventListener("click", function (event) {
-//       event.stopPropagation();
-//     });
-//   }
-// });
-
 //ABOUT PAGE OPEN –––––––––––––––––––––––––––––––––––––––
 document.addEventListener("DOMContentLoaded", function () {
   const about = document.querySelector(".about");
@@ -241,6 +211,79 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+});
+
+// RESIZE –––––––––––––––––––––––––––––––––––––––
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Sidebar Resize
+  const sidebarLeft = document.querySelector(".sidebar-left");
+  const sidebarRight = document.querySelector(".sidebar-right");
+  const sidebarResizer = document.querySelector(".sidebar-resizer");
+
+  let isResizingSidebar = false;
+
+  sidebarResizer.addEventListener("mousedown", () => {
+    isResizingSidebar = true;
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizingSidebar) return;
+
+    const containerOffsetLeft = sidebarLeft.parentElement.getBoundingClientRect().left;
+    let newWidth = e.clientX - containerOffsetLeft;
+
+    const minWidth = 100;
+    const maxWidth = sidebarLeft.parentElement.clientWidth - minWidth - sidebarResizer.offsetWidth;
+
+    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+
+    sidebarLeft.style.width = newWidth + "px";
+    sidebarRight.style.width = `calc(100% - ${newWidth + sidebarResizer.offsetWidth}px)`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isResizingSidebar) {
+      isResizingSidebar = false;
+      document.body.style.userSelect = "auto";
+    }
+  });
+
+  // Language Resize
+  const korean = document.querySelector(".korean");
+  const english = document.querySelector(".english");
+  const languageResizer = document.querySelector(".language-resizer");
+
+  let isResizingLanguage = false;
+
+  languageResizer.addEventListener("mousedown", () => {
+    isResizingLanguage = true;
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizingLanguage) return;
+
+    const container = languageResizer.parentElement;
+    const containerOffsetLeft = container.getBoundingClientRect().left;
+    let newWidth = e.clientX - containerOffsetLeft;
+
+    const minWidth = 100;
+    const maxWidth = container.clientWidth - minWidth - languageResizer.offsetWidth;
+
+    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+
+    korean.style.width = newWidth + "px";
+    english.style.width = `calc(100% - ${newWidth + languageResizer.offsetWidth}px)`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isResizingLanguage) {
+      isResizingLanguage = false;
+      document.body.style.userSelect = "auto";
+    }
+  });
 });
 
 //SCROLLBAR
