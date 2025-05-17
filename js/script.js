@@ -242,3 +242,120 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+// SCROLL–––––––––––––––––––––––––––––––––––––––
+$(document).ready(function () {
+  $(window).on('scroll', function () {
+    var scrollTop = $(window).scrollTop();
+    var docHeight = $(document).height();
+    var winHeight = $(window).height();
+
+    var scrollPercentage = (scrollTop / (docHeight - winHeight)) * 100;
+
+    var scrollbarHeight = $('.scrollbar').height();
+    var trackHeight = $('.scrolltrack').height();
+    var trackPosition = (scrollPercentage * (scrollbarHeight - trackHeight) / 100);
+
+    // Sicherheit: Position begrenzen
+    trackPosition = Math.min(trackPosition, scrollbarHeight - trackHeight);
+
+    $('.scrolltrack').css('top', trackPosition + 'px');
+  });
+});
+
+$(document).ready(function () {
+  $(window).on('scroll', function () {
+    var scrollTop = $(window).scrollTop();
+    var docHeight = $(document).height();
+    var winHeight = $(window).height();
+
+    var scrollPercentage = (scrollTop / (docHeight - winHeight)) * 100;
+
+    var scrollbarHeight = $('.scrollbar').height();
+    var trackHeight = $('.scrolltrack').height();
+    var trackPosition = (scrollPercentage * (scrollbarHeight - trackHeight) / 100);
+
+    // Sicherheit: Position begrenzen
+    trackPosition = Math.min(trackPosition, scrollbarHeight - trackHeight);
+
+    $('.scrolltrack').css('top', trackPosition + 'px');
+  });
+});
+
+
+// RESIZE –––––––––––––––––––––––––––––––––––––––
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Sidebar Resize
+  const sidebarLeft = document.querySelector(".sidebar-left");
+  const sidebarRight = document.querySelector(".sidebar-right");
+  const sidebarResizer = document.querySelector(".sidebar-resizer");
+
+  let isResizingSidebar = false;
+
+  sidebarResizer.addEventListener("mousedown", () => {
+    isResizingSidebar = true;
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizingSidebar) return;
+
+    const containerOffsetLeft = sidebarLeft.parentElement.getBoundingClientRect().left;
+    let newWidth = e.clientX - containerOffsetLeft;
+
+    const minWidth = 100;
+    const maxWidth = sidebarLeft.parentElement.clientWidth - minWidth - sidebarResizer.offsetWidth;
+
+    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+
+    sidebarLeft.style.width = newWidth + "px";
+    sidebarRight.style.width = `calc(100% - ${newWidth + sidebarResizer.offsetWidth}px)`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isResizingSidebar) {
+      isResizingSidebar = false;
+      document.body.style.userSelect = "auto";
+    }
+  });
+
+  // Language Resize
+  const korean = document.querySelector(".korean");
+  const english = document.querySelector(".english");
+  const languageResizer = document.querySelector(".language-resizer");
+
+  let isResizingLanguage = false;
+
+  languageResizer.addEventListener("mousedown", () => {
+    isResizingLanguage = true;
+    document.body.style.userSelect = "none";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizingLanguage) return;
+
+    const container = languageResizer.parentElement;
+    const containerOffsetLeft = container.getBoundingClientRect().left;
+    let newWidth = e.clientX - containerOffsetLeft;
+
+    const minWidth = 100;
+    const maxWidth = container.clientWidth - minWidth - languageResizer.offsetWidth;
+
+    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+
+    korean.style.width = newWidth + "px";
+    english.style.width = `calc(100% - ${newWidth + languageResizer.offsetWidth}px)`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isResizingLanguage) {
+      isResizingLanguage = false;
+      document.body.style.userSelect = "auto";
+    }
+  });
+});
+
+
+
