@@ -133,7 +133,7 @@ body:has(.sidebar.show) .about{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .image img {
@@ -204,6 +204,7 @@ body:has(.sidebar.show) .about{
   flex-grow: 1;
   display: flex;
   overflow: hidden;
+  height: 100%;
 }
 
 .korean, .english {
@@ -232,40 +233,46 @@ body:has(.sidebar.show) .about{
 
 
 /* SCROLL BAR */
-.korean, .english, .image {
+
+.scroll-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.scroll-content {
   overflow-y: scroll;
-  /* Firefox only */
-  scrollbar-width: thin;
-  scrollbar-color: #000000 transparent;
-  overflow-x: hidden; 
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
 }
 
-/* WebKit browsers (Chrome, Safari, Edge) */
+.image::-webkit-scrollbar,
 .korean::-webkit-scrollbar,
-.english::-webkit-scrollbar {
+.english::-webkit-scrollbar,
+.about-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/* Custom scrollbar container */
+.scrollbar {
+  position: absolute;
+  top: 0;
+  right: 0;
   width: 4px;
+  height: 100%;
+  background: transparent;
 }
 
-.about-detail::-webkit-scrollbar {
-  height: 4px;
-}
-
-.image::-webkit-scrollbar {
-  width: 5px;
-}
-
-.korean::-webkit-scrollbar-thumb,
-.english::-webkit-scrollbar-thumb,
-.image::-webkit-scrollbar-thumb,
-.about-detail::-webkit-scrollbar-thumb {
-  background-color: #000000;
-}
-
-.korean::-webkit-scrollbar-track,
-.english::-webkit-scrollbar-track,
-.image::-webkit-scrollbar-track,
-.about-detail::-webkit-scrollbar-track {
-  background-color: transparent;
+/* Custom scrollbar thumb */
+.scrolltrack {
+  position: absolute;
+  width: 100%;
+  background: black;
+  position: absolute;
+  top: 0;
 }
 
 
@@ -301,7 +308,6 @@ body:has(.sidebar.show) .about{
   pointer-events: none;
   transition: opacity 0.4s ease;
   filter: blur(9px);
-
 
   font-family: "NanumMyeongjoBold";
   font-size: 110pt;
@@ -351,27 +357,39 @@ body:has(.sidebar.show) .about{
   bottom: 0;
 }
 
-.about-text,
-.about-exhibition,
-.about-cv {
+.about-wrapper,
+.about-imprint,
+.about-exhibition {
   flex-shrink: 0;
 }
 
-.about-text {
+.about-wrapper {
   width: 50vw;
   border-right: 1px solid #000000;
-  font-size: 2rem;
-  margin-left: 10px;
   position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
 }
 
-.about-english,
-.about-korean {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 98%;
-  transition: opacity 0.4s ease, filter 0.4s ease;
+.about-text {
+  position: relative;
+  font-size: 2rem;
+  padding-left: 5px;
+  padding-right: 3px;
+
+  border-bottom: 1px solid #000000;
+}
+
+.about-paragraphs {
+  position: relative;
+  width: 100%;
+}
+
+.about-paragraphs p {
+  margin-bottom: 10px;
 }
 
 .about-english {
@@ -379,6 +397,7 @@ body:has(.sidebar.show) .about{
   filter: blur(0px);
   z-index: 2;
   line-height: 2.4rem;
+  transition: opacity 0.4s ease, filter 0.4s ease;
 }
 
 .about-korean {
@@ -391,6 +410,12 @@ body:has(.sidebar.show) .about{
   filter: blur(6px);
   z-index: 1;
   pointer-events: none;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 97%;
+  transition: opacity 0.4s ease, filter 0.4s ease;
 }
 
 .about-text:hover .about-english {
@@ -403,14 +428,22 @@ body:has(.sidebar.show) .about{
   filter: blur(0px);
 }
 
+.about-cv {
+  position: relative;
+}
+
+.cv-wrapper {
+  padding: 10px;
+}
+
 .about-exhibition {
   width: 40vw;
   border-right: 1px solid #000000;
   overflow-y: auto;
 }
 
-.about-cv {
-  width: 40vw;
+.about-imprint {
+  width: 80vw;
   overflow-y: auto;
 }
 
