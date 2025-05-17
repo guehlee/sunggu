@@ -190,36 +190,6 @@ projectCanvas.addEventListener("click", function (event) {
   }
 });
 
-// // CLICK FUNCTION FOR SIDEBAR–––––––––––––––––––––––––––––––––––––––
-// document.addEventListener("DOMContentLoaded", function () {
-//   const thumbnails = document.querySelectorAll(".openSidebar");
-//   const sidebar = document.querySelector(".sidebar");
-
-//   if (thumbnails.length > 0 && sidebar) {
-//     thumbnails.forEach((thumb) => {
-//       thumb.addEventListener("click", function (event) {
-//         sidebar.classList.add("show");
-//         event.stopPropagation(); // Verhindert Schließen durch Außenklick
-//       });
-//     });
-
-//     // Sidebar schließen bei Klick außerhalb
-//     document.addEventListener("click", function (event) {
-//       if (
-//         sidebar.classList.contains("show") &&
-//         !sidebar.contains(event.target)
-//       ) {
-//         sidebar.classList.remove("show");
-//       }
-//     });
-
-//     // Klicks innerhalb der Sidebar nicht als Außenklick zählen
-//     sidebar.addEventListener("click", function (event) {
-//       event.stopPropagation();
-//     });
-//   }
-// });
-
 //ABOUT PAGE OPEN –––––––––––––––––––––––––––––––––––––––
 document.addEventListener("DOMContentLoaded", function () {
   const about = document.querySelector(".about");
@@ -242,47 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-
-// SCROLL–––––––––––––––––––––––––––––––––––––––
-$(document).ready(function () {
-  $(window).on('scroll', function () {
-    var scrollTop = $(window).scrollTop();
-    var docHeight = $(document).height();
-    var winHeight = $(window).height();
-
-    var scrollPercentage = (scrollTop / (docHeight - winHeight)) * 100;
-
-    var scrollbarHeight = $('.scrollbar').height();
-    var trackHeight = $('.scrolltrack').height();
-    var trackPosition = (scrollPercentage * (scrollbarHeight - trackHeight) / 100);
-
-    // Sicherheit: Position begrenzen
-    trackPosition = Math.min(trackPosition, scrollbarHeight - trackHeight);
-
-    $('.scrolltrack').css('top', trackPosition + 'px');
-  });
-});
-
-$(document).ready(function () {
-  $(window).on('scroll', function () {
-    var scrollTop = $(window).scrollTop();
-    var docHeight = $(document).height();
-    var winHeight = $(window).height();
-
-    var scrollPercentage = (scrollTop / (docHeight - winHeight)) * 100;
-
-    var scrollbarHeight = $('.scrollbar').height();
-    var trackHeight = $('.scrolltrack').height();
-    var trackPosition = (scrollPercentage * (scrollbarHeight - trackHeight) / 100);
-
-    // Sicherheit: Position begrenzen
-    trackPosition = Math.min(trackPosition, scrollbarHeight - trackHeight);
-
-    $('.scrolltrack').css('top', trackPosition + 'px');
-  });
-});
-
 
 // RESIZE –––––––––––––––––––––––––––––––––––––––
 
@@ -357,5 +286,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//SCROLLBAR
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollables = document.querySelectorAll(".scroll-content");
 
+  scrollables.forEach((container) => {
+    const scrollbar = container.querySelector(".scrollbar");
+    const track = container.querySelector(".scrolltrack");
 
+    if (!scrollbar || !track) return;
+
+    container.addEventListener("scroll", function () {
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+
+      if (scrollHeight <= clientHeight) {
+        track.style.display = "none";
+        return;
+      } else {
+        track.style.display = "block";
+      }
+
+      const scrollbarHeight = scrollbar.offsetHeight;
+
+      const trackHeight = Math.max(
+        (clientHeight / scrollHeight) * scrollbarHeight,
+        30
+      );
+      const scrollPercentage = scrollTop / (scrollHeight - clientHeight);
+      const trackTop = scrollPercentage * (scrollbarHeight - trackHeight);
+
+      track.style.height = `${trackHeight}px`;
+      track.style.top = `${trackTop}px`;
+
+      console.log({
+        element: container.className,
+        scrollTop,
+        scrollHeight,
+        clientHeight,
+        scrollbarHeight,
+        trackHeight,
+        scrollPercentage,
+        trackTop,
+      });
+    });
+
+    container.dispatchEvent(new Event("scroll"));
+  });
+});
