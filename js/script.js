@@ -242,3 +242,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+//SCROLLBAR
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollables = document.querySelectorAll(".scroll-content");
+
+  scrollables.forEach((container) => {
+    const scrollbar = container.querySelector(".scrollbar");
+    const track = container.querySelector(".scrolltrack");
+
+    if (!scrollbar || !track) return;
+
+    container.addEventListener("scroll", function () {
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+
+      if (scrollHeight <= clientHeight) {
+        track.style.display = "none";
+        return;
+      } else {
+        track.style.display = "block";
+      }
+
+      const scrollbarHeight = scrollbar.offsetHeight;
+
+      const trackHeight = Math.max(
+        (clientHeight / scrollHeight) * scrollbarHeight,
+        30
+      );
+      const scrollPercentage = scrollTop / (scrollHeight - clientHeight);
+      const trackTop = scrollPercentage * (scrollbarHeight - trackHeight);
+
+      track.style.height = `${trackHeight}px`;
+      track.style.top = `${trackTop}px`;
+
+      console.log({
+        element: container.className,
+        scrollTop,
+        scrollHeight,
+        clientHeight,
+        scrollbarHeight,
+        trackHeight,
+        scrollPercentage,
+        trackTop,
+      });
+    });
+
+    container.dispatchEvent(new Event("scroll"));
+  });
+});
