@@ -1,5 +1,14 @@
 let leaderLines = [];
 
+// layout elements
+const sidebar = document.querySelector(".sidebar");
+const aboutDetail = document.querySelector(".about-detail");
+
+let oldWidth = window.innerWidth
+let oldHeight = window.innerHeight
+
+let layoutState = "landing"
+
 $(document).ready(function () {
   console.log("Ready!");
 
@@ -13,9 +22,10 @@ $(document).ready(function () {
       console.log("clicking?:" + isClicked);
       return isClicked;
     })
-    .on("mousemove", function () {
+    .on("mousemove", function (event) {
       if (isClicked) {
         isMoving = true;
+        event.target.dataset.dragged = true
       }
       console.log("moving?:" + isMoving);
       return isMoving;
@@ -23,7 +33,13 @@ $(document).ready(function () {
     .on("mouseup", function (event) {
       if (!isMoving) {
         document.querySelector(".sidebar").classList.add("show");
+        // if sidebar opens
+        const newWidth = window.innerWidth - sidebar.getBoundingClientRect().width;
+        moveThumbnails(newWidth - 100, oldHeight);
         event.stopPropagation();
+      }
+      else {
+        event.target.dataset.dragged = false
       }
       isClicked = false;
       isMoving = false;
@@ -51,6 +67,8 @@ $(document).ready(function () {
       },
     });
 });
+//ProjectCanvas
+
 
 // VIDEO DETECTION
 document.addEventListener("DOMContentLoaded", function () {
@@ -129,6 +147,33 @@ window.addEventListener("resize", () => {
   leaderLines.forEach((line) => line.position());
 });
 
+//PushThumbnails
+function moveThumbnails(newWidth, newHeight) {
+  const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
+  const widthRatio = newWidth / oldWidth
+  const heightRatio = newHeight / oldHeight
+  thumbnails.forEach((thumbnail) => {
+    const oldLeft = parseFloat(thumbnail.style.left);
+    const oldTop = parseFloat(thumbnail.style.top);
+    thumbnail.style.left = oldLeft * widthRatio + 'px';
+    thumbnail.style.top = oldTop * heightRatio + 'px';
+  })  
+  oldHeight = newHeight
+  oldWidth = newWidth
+
+  let startTime = Date.now()
+  const update = () => {
+    if (Date.now() - startTime > 300) return
+    leaderLines.forEach((line) => line.position()); // 🔁 LeaderLines live aktualisieren
+    requestAnimationFrame(update)
+  }
+  update()
+}
+
+window.addEventListener("resize", event => {
+  moveThumbnails(window.innerWidth, window.innerHeight)
+})
+
 // HILFSFUNKTIONEN ––––––––––––––––––––––––––––––––––––––––
 
 function getRandomPositionWithinBounds(prev, width, height) {
@@ -181,10 +226,11 @@ function getRandomRotation() {
 
 // SIDEBAR SCHLIEßEN BEIM KLICK AUF BACKGROUND
 const projectCanvas = document.querySelector(".back");
-const sidebar = document.querySelector(".sidebar");
 
 projectCanvas.addEventListener("click", function (event) {
   if (sidebar.classList.contains("show")) {
+    // if sidebar gets closed
+    moveThumbnails(window.innerWidth, oldHeight);
     sidebar.classList.remove("show");
     event.stopPropagation();
   }
@@ -197,6 +243,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (about && aboutDetail) {
     about.addEventListener("click", function () {
+      if (aboutDetail.classList.contains("show")) {
+        // if about Detail closes
+        moveThumbnails(oldWidth, window.innerHeight);
+      }
+      else {
+        // about Detail opens
+        const newHeight = window.innerHeight*0.95 - aboutDetail.getBoundingClientRect().height;
+        moveThumbnails(oldWidth, newHeight);
+      }
       aboutDetail.classList.toggle("show");
     });
 
@@ -208,6 +263,8 @@ document.addEventListener("DOMContentLoaded", function () {
         !about.contains(e.target)
       ) {
         aboutDetail.classList.remove("show");
+        // if about Detail closes
+        moveThumbnails(oldWidth, window.innerHeight);
       }
     });
   }

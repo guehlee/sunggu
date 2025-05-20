@@ -71,6 +71,10 @@ body {
   transition: box-shadow 0.2s ease, transform 0.1s ease;
 }
 
+.thumbnail:not(:has(img[data-dragged="true"])) {
+  transition: left 0.3s ease, top 0.3s ease;
+}
+
 .thumbnail:hover {
   width: 8vw;
   overflow: hidden;
