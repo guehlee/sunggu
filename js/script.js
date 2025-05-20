@@ -59,15 +59,15 @@ document.addEventListener("DOMContentLoaded", function () {
     videoContainer.classList.add("active");
   }
 
-  // CREDIT TOGGLE
-  const title = document.getElementById("toggleCredit");
-  const creditBox = document.getElementById("creditBox");
-  if (title && creditBox) {
-    title.addEventListener("click", function () {
-      const isVisible = creditBox.classList.toggle("visible");
-      title.textContent = isVisible ? "Lizard Tale ▲" : "Lizard Tale ▼";
-    });
-  }
+  // // CREDIT TOGGLE
+  // const title = document.getElementById("toggleCredit");
+  // const creditBox = document.getElementById("creditBox");
+  // if (title && creditBox) {
+  //   title.addEventListener("click", function () {
+  //     const isVisible = creditBox.classList.toggle("visible");
+  //     title.textContent = isVisible ? "Lizard Tale ▲" : "Lizard Tale ▼";
+  //   });
+  // }
 
   // THUMBNAIL PLACEMENT + LEADERLINE
   const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
@@ -215,49 +215,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // RESIZE –––––––––––––––––––––––––––––––––––––––
 
-
-$('.sidebar-resizer').on('mousedown', function (e) {
+$(".sidebar-resizer").on("mousedown", function (e) {
   console.log(e);
-  
+
   e.preventDefault();
-  const sidebarLeft = $('.sidebar-left');
-  const sidebarRight = $('.sidebar-right');
+  const sidebarLeft = $(".sidebar-left");
+  const sidebarRight = $(".sidebar-right");
   const sidebarStartX = e.pageX;
   const sidebarStartWidth = sidebarLeft.width();
 
-  $(document).on('mousemove', function (e) {
+  $(document).on("mousemove", function (e) {
     const newWidth = sidebarStartWidth + (e.pageX - sidebarStartX);
     sidebarLeft.width(newWidth);
-    sidebarRight.css('width', `calc(100% - ${newWidth}px)`);
+    sidebarRight.css("width", `calc(100% - ${newWidth}px)`);
   });
 
-  $(document).on('mouseup', function () {
-    $(document).off('mousemove mouseup');
+  $(document).on("mouseup", function () {
+    $(document).off("mousemove mouseup");
   });
 });
 
-$('.language-resizer').on('mousedown', function (e) {
+$(".language-resizer").on("mousedown", function (e) {
   e.preventDefault();
-  const english = $('.english');
-  const korean = $('.korean');
+  const english = $(".english");
+  const korean = $(".korean");
   const languageStartX = e.pageX;
   const languageStartWidthEnglish = english.width();
   const languageStartWidthKorean = korean.width();
 
   console.log(languageStartWidthEnglish);
-  
-  
-  $(document).on('mousemove', function (e) {
+
+  $(document).on("mousemove", function (e) {
     const newWidth = languageStartWidthEnglish + (e.pageX - languageStartX);
     // korean.width(newWidth);
-    english.css('width', `${newWidth}px`);
+    english.css("width", `${newWidth}px`);
   });
-  $(document).on('mouseup', function () {
-    $(document).off('mousemove mouseup');
+  $(document).on("mouseup", function () {
+    $(document).off("mousemove mouseup");
   });
-
 });
 
+$(".about-resizer").on("mousedown", function (e) {
+  console.log(e);
+
+  e.preventDefault();
+  const aboutEnglish = $(".about-english");
+  const aboutKorean = $(".about-korean");
+  const aboutStartX = e.pageX;
+  const aboutStartWidth = aboutEnglish.width();
+
+  $(document).on("mousemove", function (e) {
+    const newWidth = aboutStartWidth + (e.pageX - aboutStartX);
+    aboutEnglish.width(newWidth);
+    aboutKorean.css("width", `calc(100% - ${newWidth}px)`);
+  });
+
+  $(document).on("mouseup", function () {
+    $(document).off("mousemove mouseup");
+  });
+});
 
 //SCROLLBAR
 document.addEventListener("DOMContentLoaded", function () {
