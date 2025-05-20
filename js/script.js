@@ -215,76 +215,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // RESIZE –––––––––––––––––––––––––––––––––––––––
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Sidebar Resize
-  const sidebarLeft = document.querySelector(".sidebar-left");
-  const sidebarRight = document.querySelector(".sidebar-right");
-  const sidebarResizer = document.querySelector(".sidebar-resizer");
 
-  let isResizingSidebar = false;
+$('.sidebar-resizer').on('mousedown', function (e) {
+  console.log(e);
+  
+  e.preventDefault();
+  const sidebarLeft = $('.sidebar-left');
+  const sidebarRight = $('.sidebar-right');
+  const sidebarStartX = e.pageX;
+  const sidebarStartWidth = sidebarLeft.width();
 
-  sidebarResizer.addEventListener("mousedown", () => {
-    isResizingSidebar = true;
-    document.body.style.userSelect = "none";
+  $(document).on('mousemove', function (e) {
+    const newWidth = sidebarStartWidth + (e.pageX - sidebarStartX);
+    sidebarLeft.width(newWidth);
+    sidebarRight.css('width', `calc(100% - ${newWidth}px)`);
   });
 
-  document.addEventListener("mousemove", (e) => {
-    if (!isResizingSidebar) return;
-
-    const containerOffsetLeft = sidebarLeft.parentElement.getBoundingClientRect().left;
-    let newWidth = e.clientX - containerOffsetLeft;
-
-    const minWidth = 100;
-    const maxWidth = sidebarLeft.parentElement.clientWidth - minWidth - sidebarResizer.offsetWidth;
-
-    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
-
-    sidebarLeft.style.width = newWidth + "px";
-    sidebarRight.style.width = `calc(100% - ${newWidth + sidebarResizer.offsetWidth}px)`;
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (isResizingSidebar) {
-      isResizingSidebar = false;
-      document.body.style.userSelect = "auto";
-    }
-  });
-
-  // Language Resize
-  const korean = document.querySelector(".korean");
-  const english = document.querySelector(".english");
-  const languageResizer = document.querySelector(".language-resizer");
-
-  let isResizingLanguage = false;
-
-  languageResizer.addEventListener("mousedown", () => {
-    isResizingLanguage = true;
-    document.body.style.userSelect = "none";
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (!isResizingLanguage) return;
-
-    const container = languageResizer.parentElement;
-    const containerOffsetLeft = container.getBoundingClientRect().left;
-    let newWidth = e.clientX - containerOffsetLeft;
-
-    const minWidth = 100;
-    const maxWidth = container.clientWidth - minWidth - languageResizer.offsetWidth;
-
-    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
-
-    korean.style.width = newWidth + "px";
-    english.style.width = `calc(100% - ${newWidth + languageResizer.offsetWidth}px)`;
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (isResizingLanguage) {
-      isResizingLanguage = false;
-      document.body.style.userSelect = "auto";
-    }
+  $(document).on('mouseup', function () {
+    $(document).off('mousemove mouseup');
   });
 });
+
+$('.language-resizer').on('mousedown', function (e) {
+  e.preventDefault();
+  const english = $('.english');
+  const korean = $('.korean');
+  const languageStartX = e.pageX;
+  const languageStartWidthEnglish = english.width();
+  const languageStartWidthKorean = korean.width();
+
+  console.log(languageStartWidthEnglish);
+  
+  
+  $(document).on('mousemove', function (e) {
+    const newWidth = languageStartWidthEnglish + (e.pageX - languageStartX);
+    // korean.width(newWidth);
+    english.css('width', `${newWidth}px`);
+  });
+  $(document).on('mouseup', function () {
+    $(document).off('mousemove mouseup');
+  });
+
+});
+
 
 //SCROLLBAR
 document.addEventListener("DOMContentLoaded", function () {
