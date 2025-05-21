@@ -35,7 +35,7 @@ $(document).ready(function () {
         document.querySelector(".sidebar").classList.add("show");
         // if sidebar opens
         const newWidth = window.innerWidth - sidebar.getBoundingClientRect().width;
-        moveThumbnails(newWidth - 100, oldHeight);
+        moveThumbnails(newWidth - 120, oldHeight);
         event.stopPropagation();
       }
       else {
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < thumbnails.length - 1; i++) {
       const line = new LeaderLine(thumbnails[i], thumbnails[i + 1], {
         color: "#000",
-        size: 4,
+        size: 2,
         // size: 2.5,
         path: "magnetic",
         endPlug: "arrow2",
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       else {
         // about Detail opens
-        const newHeight = window.innerHeight*0.95 - aboutDetail.getBoundingClientRect().height;
+        const newHeight = window.innerHeight*0.8 - aboutDetail.getBoundingClientRect().height;
         moveThumbnails(oldWidth, newHeight);
       }
       aboutDetail.classList.toggle("show");
