@@ -12,24 +12,18 @@
     <meta name="description" content="A description of the page" />
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png" />
     <!-- Points to an external CSS style sheet -->
-    <link
-      href="css/style.css"
-      rel="stylesheet"
-      media="only screen and (min-width: 651px)"
-    />
-
-    <!-- SECOND CSS IF NEEDED -->
-    <link
-      href="css/style_mobile.css"
-      rel="stylesheet"
-      media="only screen and (max-width: 650px)"
-    />
+    <link href="css/style.css" rel="stylesheet" />
   </head>
 
   <body>
     <div class="project-canvas">
       <div class="back"></div>
       <div class="project">
+        <div class="mobile-header">
+          <div class="mobile-title">Sunggu Hong</div>
+          <div class="mobile-about-toggle">+</div>
+        </div>
+
         <div id="thumb-1" class="thumbnail">
           <img
             class="openSidebar"
@@ -199,7 +193,7 @@
           </div>
           <div class="sidebar-right">
             <div class="description">
-              <span class="title" id="toggleCredit">Lizard Tale</span>
+              <span class="title" id="toggleCredit">Lizard Tale ▼</span>
 
               <div class="description-credit" id="creditBox">
                 <span>
@@ -237,21 +231,27 @@
         <div class="about">
           <span
             class="trans-word"
-            data-translation="성구 홍 번역 문장"
+            data-translation="성구 홍"
             style="width: 500px"
-            >Sunggu is blah blah</span
+            >Sunggu</span
           >
+          is a
+          <span class="trans-word" data-translation="퍼포먼스 아티스트"
+            >performance artist</span
+          >
+          based in
+          <span class="trans-word" data-translation="비엔나">Vienna</span>
         </div>
 
         <div class="about-detail" id="aboutDetail">
           <div class="about-wrapper">
             <div class="scroll-wrapper">
               <div class="scroll-content about-scroll">
-                <!-- <div class="scrollbar"><div class="scrolltrack"></div></div> -->
+                <div class="scrollbar"><div class="scrolltrack"></div></div>
 
                 <div class="about-text">
-                  <div class="about-english">
-                    <p>
+                  <div class="about-paragraphs">
+                    <p class="about-english">
                       Sunggu Hong(born in Seoul) is a Vienna-based artist.
                       Sunggu works with simple questions and his curiosity that
                       comes up in daily life. Although the questions may seem
@@ -267,10 +267,7 @@
                       are some of the questions he often reflects on in his
                       work.
                     </p>
-                  </div>
-                  <div class="about-resizer"></div>
-                  <div class="about-korean">
-                    <p>
+                    <p class="about-korean">
                       홍성구 작가는 현재 비엔나를 기반으로 활동하는
                       아티스트입니다. 그는 일상 속에서 떠오르는 단순한 질문들과
                       호기심을 작업의 출발점으로 삼습니다. 그 질문들은 처음엔
@@ -319,6 +316,19 @@
             <div class="about-title">Imprint / Data Policy</div>
             <li>here comes imprint</li>
           </div>
+        </div>
+      </div>
+
+      <!-- MOBILE SINGLE PROJECT VIEW -->
+      <div class="mobile-project-view" style="display: none">
+        <div class="mobile-project-content">
+          <!-- You can fill this dynamically or clone from sidebar -->
+          <div class="video-container"></div>
+          <div class="text-container">
+            <div class="english-text"></div>
+            <div class="korean-text"></div>
+          </div>
+          <div class="images-container"></div>
         </div>
       </div>
     </div>

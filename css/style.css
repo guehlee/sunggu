@@ -537,3 +537,120 @@ body:has(.sidebar.show) .about {
   padding: 10px;
   border-bottom: 1px solid #000000;
 }
+
+.mobile-header {
+  display: none;
+}
+
+/* ================================ */
+/*       ✦ MOBILE OVERRIDES ✦       */
+/* ================================ */
+
+@media screen and (max-width: 650px) {
+html, body {
+  overflow-y: auto; 
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+.mobile-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  font-family: "Freeserif";
+  font-size: 1.6rem;
+  border-bottom: 1px solid black;
+  position: fixed;
+  top: 0;
+  background: white;
+  z-index: 999;
+}
+
+.mobile-about-toggle {
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+  
+.mobile-header {
+  box-sizing: border-box;
+  max-width: 100vw;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.mobile-title,
+.mobile-about-toggle {
+  max-width: 45%;
+  overflow-wrap: break-word;
+}
+
+.thumbnail {
+  position: relative !important; /* or relative */
+  width: 90vw;
+  max-width: 400px;
+  margin: 20px auto;
+  display: block;
+
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+}
+
+.thumbnail:hover {
+  width: 90vw !important;
+  margin: 20px auto !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.openSidebar {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project {
+  display: block !important;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.mobile-project-view {
+  position: fixed;
+  top: 54px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 54px);
+  background: white;
+  overflow-y: auto;
+  z-index: 998;
+}
+
+.mobile-project-content img {
+  width: 90vw;
+}
+
+.mobile-project-content {
+  padding: 20px;
+}
+
+.sidebar,
+.sidebar-left,
+.about-detail,
+.about,
+.video,
+.video iframe,
+.text,
+.description,
+.sidebar-right,
+.back,
+.scroll-content.image {
+  display: none !important;
+}
+
+}
