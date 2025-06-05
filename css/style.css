@@ -187,7 +187,11 @@ body:has(.sidebar.show) .about {
 
 .image img {
   width: 96%;
-  padding-top: 10px;
+  /* padding-top: 10px; */
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 3px;
 }
 
 .description {
@@ -214,10 +218,9 @@ body:has(.sidebar.show) .about {
 .description-credit {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease;
   margin-top: 10px;
   opacity: 0;
-  transition: max-height 0.4s ease, opacity 0.3s ease;
+  transition: max-height 0.7s ease, opacity 0.3s ease;
 }
 
 .description:hover .description-credit {
@@ -236,6 +239,7 @@ body:has(.sidebar.show) .about {
   background-color: #ffffff;
   border: 1px solid;
   border-top: none;
+  /* padding: 10px; */
 }
 
 .video.active {
@@ -246,9 +250,11 @@ body:has(.sidebar.show) .about {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: auto;
   height: 100%;
   border: 0;
+  padding: 10px;
+
 }
 
 .text {
@@ -299,27 +305,29 @@ body:has(.sidebar.show) .about {
   width: 50%;
 }
 
- .korean{
-    padding: 0 10px;
- }
+.korean {
+  padding: 10 10px;
+}
 
 /* SCROLL BAR */
 
 
 .scroll-content {
-  overflow-y: scroll;
+  overflow-y: hidden;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
   scrollbar-width: none;
   -ms-overflow-style: none;
+
 }
 
 .image::-webkit-scrollbar,
 .korean::-webkit-scrollbar,
 .english::-webkit-scrollbar,
 .about-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
+  /* Chrome, Safari, Edge */
 }
 
 /* Custom scrollbar container */
@@ -354,6 +362,7 @@ body:has(.sidebar.show) .about {
   overflow: none;
   z-index: 4;
   height: 50px;
+  width: 300px;
 }
 
 .trans-word {
@@ -367,13 +376,17 @@ body:has(.sidebar.show) .about {
   text-align: left;
 }
 
+.about:hover+.about-detail {
+  bottom: -60%;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+}
+
 .trans-word::after {
   content: attr(data-translation);
   position: absolute;
   top: 50%;
   left: 0%;
   transform: translate(0%, -46%);
-  /* zentriert das Pseudo-Element */
   color: black;
   font-weight: bold;
   white-space: nowrap;
@@ -409,17 +422,92 @@ body:has(.sidebar.show) .about {
   position: fixed;
   left: 0;
   bottom: -65%;
+  height: 65%;
   width: 100vw;
-  height: 65vh;
   display: flex;
-  transition: bottom 0.4s ease-in-out;
+  transition: bottom 0.3s ease-in-out, box-shadow 0.1s ease;
   border-top: 1px solid black;
   background-color: #ffffff;
   overflow-x: auto;
   z-index: 1000;
-  
-  min-width: 100vw;
+  box-shadow: none;
+  overflow-x: hidden;
+  flex-grow: 1;
 }
+
+.imprint-btn {
+  position: fixed;
+  bottom: -7vh;
+  height: 3vh !important;
+  width: 17vw !important;
+  left: 40vw;
+  background-color: white;
+  border: #000000 1px solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  z-index: 99999;
+  padding: 8px;
+  text-align: center;
+  font-size: 1.3rem;
+  overflow: hidden !important;
+  transition: box-shadow 0.3s ease, bottom 0.3s ease-in-out !important;
+
+}
+
+.imprint-btn:hover {
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+}
+
+.about-imprint {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  bottom: -101%;
+  background-color: white;
+  font-size: 1.3 rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  z-index: 99999;
+  transition: bottom 0.3s ease-in-out;
+  border: #000000 solid 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.imprint-close {
+  position: fixed;
+  top: -15%;
+  left: 45vw;
+  height: 5%;
+  width: 10vw;
+  background-color: white;
+  border: #000000 solid 1px;
+  transition: top 0.3s ease-in-out, box-shadow 0.3s ease;
+  text-align: center;
+  font-size: 1.3rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imprint-close:hover {
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+}
+
+.about-imprint.show {
+  bottom: 0;
+}
+
+.about-imprint.show .imprint-close {
+  top: 0;
+}
+
+.about-imprint.show -imprint-btn {
+  bottom: 100%;
+}
+
 
 .about-detail p {
   margin-top: 0.5rem;
@@ -428,24 +516,12 @@ body:has(.sidebar.show) .about {
 }
 
 .about-detail.show {
-  bottom: 0;
+  bottom: 0 !important;
 }
 
-.about-wrapper,
-.about-imprint,
-.about-exhibition {
-  flex-shrink: 0;
-}
-
-.about-wrapper {
-  width: 50vw;
-  border-right: 1px solid #000000;
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-
-  overflow-y: auto;
+.about-detail.show .imprint-btn {
+  bottom: 0 !important;
+  transition: bottom 0.3s ease-in-out;
 }
 
 .about-text {
@@ -455,34 +531,28 @@ body:has(.sidebar.show) .about {
   padding-right: 3px;
   display: flex;
 
+  flex-grow: 1;
+  width: 50%;
+
   border-bottom: 1px solid #000000;
 
-  height: 50vh;
-  /* overflow: hidden; */
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
 }
-
-/* .about-paragraphs {
-  position: relative;
-  width: 100%;
-}
-
-.about-paragraphs p {
-  margin-bottom: 10px;
-} */
 
 .about-english {
   font-family: "Freeserif", serif;
   font-size: 1.3rem;
-
   flex-grow: 1;
   width: 50%;
-
+  height: auto;
+  max-height: 100%;
+  overflow-y: auto;
   opacity: 1;
   filter: blur(0px);
   z-index: 2;
   line-height: 1.4rem;
-
-  overflow: scroll;
 }
 
 .about-korean {
@@ -490,15 +560,73 @@ body:has(.sidebar.show) .about {
   font-weight: bold;
   font-size: 1.1rem;
   line-height: 1.5rem;
-
   flex-grow: 1;
   width: 50%;
+  height: auto;
+  max-height: 100%;
+  overflow-y: auto;
+}
 
-  overflow: scroll;
+.about-work {
+  position: relative;
+  font-size: 2rem;
+  padding-left: 5px;
+  padding-right: 3px;
+  display: flex;
+  flex-grow: 1;
+  width: 50%;
+  border-bottom: 1px solid #000000;
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
+
+  font-family: "Freeserif", serif;
+  font-size: 1.3rem;
+}
+
+.about-cv {
+  position: inherit;
+  flex-grow: 1;
+  width: 100%;
+  border-bottom: 1px solid #000000;
+  overflow: hidden;
+}
+
+.about-exhibition {
+  position: inherit;
+  flex-grow: 1;
+  width: 100%;
+  border-bottom: 1px solid #000000;
+  overflow: hidden;
+}
+
+.cv-title {
+  position: inherit;
+  border-bottom: black solid 1px;
+  width: auto;
+  padding-left: 5px;
+}
+
+.cv-text {
+  padding-left: 5px;
+
+}
+
+.exhibit-title {
+  position: inherit;
+  border-bottom: black solid 1px;
+  width: auto;
+  padding-left: 5px;
+
+}
+
+.exhibit-text {
+  padding-left: 5px;
+
 }
 
 .about-resizer {
-  width: 7px;
+  width: 7px !important;
   background-color: rgb(255, 255, 255);
   border-left: #000000 solid 1px;
   border-right: #000000 solid 1px;
@@ -514,23 +642,34 @@ body:has(.sidebar.show) .about {
   cursor: grab;
 }
 
-.about-cv {
+.about-work-resizer {
+  width: 7px !important;
+  background-color: rgb(255, 255, 255);
+  border-left: #000000 solid 1px;
+  border-right: #000000 solid 1px;
+  transition: box-shadow 0.1s ease;
+  z-index: 1002;
+
   position: relative;
+  height: 100%;
 }
 
-.cv-wrapper {
-  padding: 10px;
+.about-work-resizer:hover {
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+  cursor: grab;
 }
 
-.about-exhibition {
-  width: 40vw;
-  border-right: 1px solid #000000;
-  overflow-y: auto;
-}
 
-.about-imprint {
-  width: 80vw;
-  overflow-y: auto;
+.about-detail-resizer {
+  width: 7px !important;
+  background-color: rgb(255, 255, 255);
+  border-left: #000000 solid 1px;
+  border-right: #000000 solid 1px;
+  transition: box-shadow 0.1s ease;
+  z-index: 1002;
+
+  position: relative;
+  height: 100%;
 }
 
 .about-title {
@@ -653,4 +792,7 @@ body.no-scroll {
   display: none !important;
 }
 
+.about-detail-resizer:hover {
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+  cursor: grab;
 }
