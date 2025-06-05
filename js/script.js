@@ -312,6 +312,54 @@ $(".language-resizer").on("mousedown", function (e) {
   });
 });
 
+
+
+$(".about-work-resizer").on("mousedown", function (e) {
+  console.log(e);
+
+  e.preventDefault();
+  const aboutCv = $(".about-cv");
+  const aboutExhibition = $(".about-exhibition");
+  const aboutStartX = e.pageX;
+  const aboutStartWidth = aboutCv.width();
+
+  $(document).on("mousemove", function (e) {
+    const newWidth = aboutStartWidth + (e.pageX - aboutStartX);
+    aboutCv.width(newWidth);
+    aboutExhibition.css("width", `calc(100% - ${newWidth}px)`);
+  });
+
+  $(document).on("mouseup", function () {
+    $(document).off("mousemove mouseup");
+  });
+});
+
+
+
+$(".about-detail-resizer").on("mousedown", function (e) {
+  console.log(e);
+
+  e.preventDefault();
+  const aboutText = $(".about-text");
+  const aboutWork = $(".about-work");
+  const aboutStartX = e.pageX;
+  const aboutStartWidth = aboutText.width();
+
+  $(document).on("mousemove", function (e) {
+    const newWidth = aboutStartWidth + (e.pageX - aboutStartX);
+    aboutText.width(newWidth);
+    aboutWork.css("width", `calc(100% - ${newWidth}px)`);
+  });
+
+  $(document).on("mouseup", function () {
+    $(document).off("mousemove mouseup");
+  });
+});
+
+
+
+
+
 $(".about-resizer").on("mousedown", function (e) {
   console.log(e);
 
@@ -331,6 +379,7 @@ $(".about-resizer").on("mousedown", function (e) {
     $(document).off("mousemove mouseup");
   });
 });
+
 
 //SCROLLBAR
 document.addEventListener("DOMContentLoaded", function () {
@@ -380,4 +429,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     container.dispatchEvent(new Event("scroll"));
   });
+});
+
+// IMPRINT––––––––––––––––––––––––––––––––
+document.addEventListener("DOMContentLoaded", function () {
+  const imprintBtn = document.querySelector(".imprint-btn");
+  const aboutImprint = document.querySelector(".about-imprint");
+  const imprintClose = document.querySelector(".imprint-close");
+
+  if (imprintBtn && aboutImprint) {
+    imprintBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      aboutImprint.classList.toggle("show");
+    });
+
+    document.addEventListener("click", function (e) {
+      if (
+        aboutImprint.classList.contains("show") &&
+        !aboutImprint.contains(e.target) &&
+        !imprintBtn.contains(e.target)
+      ) {
+        aboutImprint.classList.remove("show");
+      }
+    });
+  }
+
+  if (imprintClose && aboutImprint) {
+    imprintClose.addEventListener("click", function (e) {
+      e.stopPropagation();
+      aboutImprint.classList.remove("show");
+    });
+  }
 });
