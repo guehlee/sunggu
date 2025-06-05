@@ -471,7 +471,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // –––––––––––––––– MOBILE –––––––––––––––
 // –––––––––––––––––––––––––––––––––––––––
 
-// MOBILE:: LEADERLINE ARRANGEMENT
+// MOBILE:: LANDING PAGE / LEADERLINE ARRANGEMENT
 
 function initLeaderLinesMobile() {
   // Only run on mobile
@@ -515,40 +515,87 @@ window.addEventListener("resize", () => {
   initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
 });
 
-// MOBILE:: TITLE SECTION
+// MOBILE:: SINGLE PAGE VIEW
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.innerWidth <= 650) {
-    // When a thumbnail is clicked
-    $(".thumbnail .openSidebar").on("click", function () {
-      $(".project").hide(); // Hide thumbnails
-      $(".mobile-project-view").show(); // Show project details
+document.addEventListener("click", function (e) {
+  const thumb = e.target.closest(".thumbnail");
 
-      // Optional: Load or inject content here
-      $(".video-container").html($("#videoContainer").clone());
-      $(".english-text").html($(".english").html());
-      $(".korean-text").html($(".korean").html());
-      $(".images-container").html($(".image").html());
-    });
-    const projectSection = document.querySelector(".project");
-    const projectView = document.querySelector(".mobile-project-view");
-    const thumbnails = document.querySelectorAll(".thumbnail");
+  if (thumb && window.innerWidth <= 650) {
+    console.log("✅ Thumbnail clicked on mobile");
+
+    // Switch views
+    document.querySelector(".project")?.style.setProperty("display", "none");
+    document
+      .querySelector(".mobile-project-view")
+      ?.style.setProperty("display", "block");
+
+    // Update header
+    const creditTitle = document.querySelector("#toggleCredit");
     const mobileTitle = document.querySelector(".mobile-title");
     const aboutToggle = document.querySelector(".mobile-about-toggle");
-    const creditTitle = document.querySelector("#toggleCredit");
 
-    // Open mobile project view when clicking a thumbnail
-    thumbnails.forEach((thumb) => {
-      thumb.addEventListener("click", () => {
-        projectSection.style.display = "none";
-        projectView.style.display = "block";
-        mobileTitle.textContent =
-          creditTitle?.textContent.replace("▼", "").trim() || "Project";
-        aboutToggle.textContent = "×";
+    if (creditTitle && mobileTitle) {
+      mobileTitle.textContent = creditTitle.textContent.replace("▼", "").trim();
+    }
 
-        // Disable background scroll
-        document.body.classList.add("no-scroll");
-      });
-    });
+    if (aboutToggle) {
+      aboutToggle.textContent = "×";
+    }
+
+    // Prevent background scroll
+    document.body.classList.add("no-scroll");
+
+    // Clone content
+    document
+      .querySelector(".video-container")
+      ?.replaceChildren(
+        document.querySelector("#videoContainer")?.cloneNode(true)
+      );
+    document
+      .querySelector(".english-text-container")
+      ?.replaceChildren(
+        ...document.querySelector(".english")?.cloneNode(true).childNodes
+      );
+    document
+      .querySelector(".korean-text-container")
+      ?.replaceChildren(
+        ...document.querySelector(".korean")?.cloneNode(true).childNodes
+      );
+    document
+      .querySelector(".images-container")
+      ?.replaceChildren(
+        ...document.querySelector(".image")?.cloneNode(true).childNodes
+      );
+  }
+});
+
+document.addEventListener("click", function (e) {
+  const aboutToggle = e.target.closest(".mobile-about-toggle");
+
+  if (!aboutToggle) return;
+
+  const projectView = document.querySelector(".mobile-project-view");
+  const landingView = document.querySelector(".project");
+  const mobileTitle = document.querySelector(".mobile-title");
+
+  // Are we in the mobile project view?
+  const isProjectOpen = projectView && projectView.style.display === "block";
+
+  if (isProjectOpen) {
+    // Close project view, go back to landing
+    projectView.style.display = "none";
+    landingView.style.display = "block";
+    aboutToggle.textContent = "+"; // reset button
+    if (mobileTitle) mobileTitle.textContent = "Sunggu Hong";
+
+    document.body.classList.remove("no-scroll");
+    console.log("⬅️ Closed mobile project view");
+  } else {
+    // Open About section (toggle .about-detail)
+    const aboutDetail = document.querySelector(".about-detail");
+    if (aboutDetail) {
+      aboutDetail.classList.toggle("show");
+      console.log("ℹ️ About toggled");
+    }
   }
 });

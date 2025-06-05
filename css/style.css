@@ -672,6 +672,11 @@ body:has(.sidebar.show) .about {
   height: 100%;
 }
 
+.about-detail-resizer:hover {
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+  cursor: grab;
+}
+
 .about-title {
   padding: 10px;
   border-bottom: 1px solid #000000;
@@ -763,19 +768,45 @@ body.no-scroll {
   position: fixed;
   top: 54px;
   left: 0;
-  width: 100%;
   height: calc(100vh - 54px);
   background: white;
-  overflow-y: auto;
   z-index: 996;
+
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-.mobile-project-content img {
-  width: 90vw;
+.images-container img,
+.video-container iframe {
+  width: 20vw;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .mobile-project-content {
+  flex: 0 0 95vw; /* changed from % to vw for reliable sizing */
+  height: 100%;
   padding: 20px;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+.english-text-container,
+.korean-text-container {
+  font-family: "Freeserif", serif;
+  font-size: 1rem;
+  line-height: 1.4rem;
+  overflow-y: auto;
+}
+
+.korean-text-container {
+  font-family: "NanumMyeongjo", serif;
+  font-weight: bold;
 }
 
 .sidebar,
@@ -783,7 +814,6 @@ body.no-scroll {
 .about-detail,
 .about,
 .video,
-.video iframe,
 .text,
 .description,
 .sidebar-right,
@@ -792,8 +822,4 @@ body.no-scroll {
   display: none !important;
 }
 
-.about-detail-resizer:hover {
-  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
-  cursor: grab;
-}
 }
