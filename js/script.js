@@ -325,8 +325,6 @@ $(".language-resizer").on("mousedown", function (e) {
   });
 });
 
-
-
 $(".about-work-resizer").on("mousedown", function (e) {
   console.log(e);
 
@@ -346,8 +344,6 @@ $(".about-work-resizer").on("mousedown", function (e) {
     $(document).off("mousemove mouseup");
   });
 });
-
-
 
 $(".about-detail-resizer").on("mousedown", function (e) {
   console.log(e);
@@ -369,10 +365,6 @@ $(".about-detail-resizer").on("mousedown", function (e) {
   });
 });
 
-
-
-
-
 $(".about-resizer").on("mousedown", function (e) {
   console.log(e);
 
@@ -392,7 +384,6 @@ $(".about-resizer").on("mousedown", function (e) {
     $(document).off("mousemove mouseup");
   });
 });
-
 
 //SCROLLBAR
 document.addEventListener("DOMContentLoaded", function () {
@@ -444,6 +435,37 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// IMPRINT––––––––––––––––––––––––––––––––
+document.addEventListener("DOMContentLoaded", function () {
+  const imprintBtn = document.querySelector(".imprint-btn");
+  const aboutImprint = document.querySelector(".about-imprint");
+  const imprintClose = document.querySelector(".imprint-close");
+
+  if (imprintBtn && aboutImprint) {
+    imprintBtn.addEventListener("click", function (e) {
+      console.log("Imprint button clicked ✅"); // 🔍 Test log
+      e.stopPropagation();
+      aboutImprint.classList.toggle("show");
+    });
+
+    document.addEventListener("click", function (e) {
+      if (
+        aboutImprint.classList.contains("show") &&
+        !aboutImprint.contains(e.target) &&
+        !imprintBtn.contains(e.target)
+      ) {
+        aboutImprint.classList.remove("show");
+      }
+    });
+  }
+
+  if (imprintClose && aboutImprint) {
+    imprintClose.addEventListener("click", function (e) {
+      e.stopPropagation();
+      aboutImprint.classList.remove("show");
+    });
+  }
+});
 
 // –––––––––––––––––––––––––––––––––––––––
 // –––––––––––––––– MOBILE –––––––––––––––
@@ -527,50 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Disable background scroll
         document.body.classList.add("no-scroll");
       });
-    });
-
-    // About toggle button
-    aboutToggle.addEventListener("click", () => {
-      if (projectView.style.display === "block") {
-        // If project view is open → close it
-        projectSection.style.display = "block";
-        projectView.style.display = "none";
-        mobileTitle.textContent = "Sunggu Hong";
-        aboutToggle.textContent = "+";
-        document.body.classList.remove("no-scroll");
-      } else {
-        // If in landing view → open About page (add your logic here)
-        const aboutDetail = document.getElementById("aboutDetail");
-        if (aboutDetail) aboutDetail.classList.toggle("show");
-      }
-
-// IMPRINT––––––––––––––––––––––––––––––––
-document.addEventListener("DOMContentLoaded", function () {
-  const imprintBtn = document.querySelector(".imprint-btn");
-  const aboutImprint = document.querySelector(".about-imprint");
-  const imprintClose = document.querySelector(".imprint-close");
-
-  if (imprintBtn && aboutImprint) {
-    imprintBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      aboutImprint.classList.toggle("show");
-    });
-
-    document.addEventListener("click", function (e) {
-      if (
-        aboutImprint.classList.contains("show") &&
-        !aboutImprint.contains(e.target) &&
-        !imprintBtn.contains(e.target)
-      ) {
-        aboutImprint.classList.remove("show");
-      }
-    });
-  }
-
-  if (imprintClose && aboutImprint) {
-    imprintClose.addEventListener("click", function (e) {
-      e.stopPropagation();
-      aboutImprint.classList.remove("show");
     });
   }
 });
