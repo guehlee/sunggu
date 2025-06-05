@@ -4,10 +4,10 @@ let leaderLines = [];
 const sidebar = document.querySelector(".sidebar");
 const aboutDetail = document.querySelector(".about-detail");
 
-let oldWidth = window.innerWidth
-let oldHeight = window.innerHeight
+let oldWidth = window.innerWidth;
+let oldHeight = window.innerHeight;
 
-let layoutState = "landing"
+let layoutState = "landing";
 
 $(document).ready(function () {
   console.log("Ready!");
@@ -25,7 +25,7 @@ $(document).ready(function () {
     .on("mousemove", function (event) {
       if (isClicked) {
         isMoving = true;
-        event.target.dataset.dragged = true
+        event.target.dataset.dragged = true;
       }
       console.log("moving?:" + isMoving);
       return isMoving;
@@ -34,12 +34,12 @@ $(document).ready(function () {
       if (!isMoving) {
         document.querySelector(".sidebar").classList.add("show");
         // if sidebar opens
-        const newWidth = window.innerWidth - sidebar.getBoundingClientRect().width;
+        const newWidth =
+          window.innerWidth - sidebar.getBoundingClientRect().width;
         moveThumbnails(newWidth - 120, oldHeight);
         event.stopPropagation();
-      }
-      else {
-        event.target.dataset.dragged = false
+      } else {
+        event.target.dataset.dragged = false;
       }
       isClicked = false;
       isMoving = false;
@@ -66,9 +66,22 @@ $(document).ready(function () {
         leaderLines.forEach((line) => line.position()); // 🔁 LeaderLines erneut aktualisieren
       },
     });
+
+  if (window.innerWidth <= 650) {
+    // When a thumbnail is clicked
+    $(".thumbnail .openSidebar").on("click", function () {
+      $(".project").hide(); // Hide thumbnails
+      $(".mobile-project-view").show(); // Show project details
+
+      // Optional: Load or inject content here
+      $(".video-container").html($("#videoContainer").clone());
+      $(".english-text").html($(".english").html());
+      $(".korean-text").html($(".korean").html());
+      $(".images-container").html($(".image").html());
+    });
+  }
 });
 //ProjectCanvas
-
 
 // VIDEO DETECTION
 document.addEventListener("DOMContentLoaded", function () {
@@ -150,29 +163,29 @@ window.addEventListener("resize", () => {
 //PushThumbnails
 function moveThumbnails(newWidth, newHeight) {
   const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
-  const widthRatio = newWidth / oldWidth
-  const heightRatio = newHeight / oldHeight
+  const widthRatio = newWidth / oldWidth;
+  const heightRatio = newHeight / oldHeight;
   thumbnails.forEach((thumbnail) => {
     const oldLeft = parseFloat(thumbnail.style.left);
     const oldTop = parseFloat(thumbnail.style.top);
-    thumbnail.style.left = oldLeft * widthRatio + 'px';
-    thumbnail.style.top = oldTop * heightRatio + 'px';
-  })  
-  oldHeight = newHeight
-  oldWidth = newWidth
+    thumbnail.style.left = oldLeft * widthRatio + "px";
+    thumbnail.style.top = oldTop * heightRatio + "px";
+  });
+  oldHeight = newHeight;
+  oldWidth = newWidth;
 
-  let startTime = Date.now()
+  let startTime = Date.now();
   const update = () => {
-    if (Date.now() - startTime > 300) return
+    if (Date.now() - startTime > 300) return;
     leaderLines.forEach((line) => line.position()); // 🔁 LeaderLines live aktualisieren
-    requestAnimationFrame(update)
-  }
-  update()
+    requestAnimationFrame(update);
+  };
+  update();
 }
 
-window.addEventListener("resize", event => {
-  moveThumbnails(window.innerWidth, window.innerHeight)
-})
+window.addEventListener("resize", (event) => {
+  moveThumbnails(window.innerWidth, window.innerHeight);
+});
 
 // HILFSFUNKTIONEN ––––––––––––––––––––––––––––––––––––––––
 
@@ -246,10 +259,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if (aboutDetail.classList.contains("show")) {
         // if about Detail closes
         moveThumbnails(oldWidth, window.innerHeight);
-      }
-      else {
+      } else {
         // about Detail opens
-        const newHeight = window.innerHeight*0.8 - aboutDetail.getBoundingClientRect().height;
+        const newHeight =
+          window.innerHeight * 0.8 - aboutDetail.getBoundingClientRect().height;
         moveThumbnails(oldWidth, newHeight);
       }
       aboutDetail.classList.toggle("show");
@@ -430,6 +443,106 @@ document.addEventListener("DOMContentLoaded", function () {
     container.dispatchEvent(new Event("scroll"));
   });
 });
+
+
+// –––––––––––––––––––––––––––––––––––––––
+// –––––––––––––––– MOBILE –––––––––––––––
+// –––––––––––––––––––––––––––––––––––––––
+
+// MOBILE:: LEADERLINE ARRANGEMENT
+
+function initLeaderLinesMobile() {
+  // Only run on mobile
+  if (window.innerWidth <= 650) {
+    // Remove old lines
+    leaderLines.forEach((line) => line.remove());
+    leaderLines = [];
+
+    const thumbs = document.querySelectorAll(".thumbnail");
+
+    for (let i = 0; i < thumbs.length - 1; i++) {
+      const line = new LeaderLine(
+        LeaderLine.pointAnchor(thumbs[i], { x: "50%", y: "100%" }),
+        LeaderLine.pointAnchor(thumbs[i + 1], { x: "50%", y: "0%" }),
+        {
+          path: "straight",
+          startSocket: "bottom",
+          endSocket: "top",
+          color: "#000",
+          size: 2,
+        }
+      );
+      leaderLines.push(line);
+    }
+
+    // Update on scroll
+    const scrollContainer = document.querySelector(".project");
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", () => {
+        leaderLines.forEach((line) => line.position());
+      });
+    }
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(initLeaderLinesMobile, 200); // Let layout settle first
+});
+
+window.addEventListener("resize", () => {
+  initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
+});
+
+// MOBILE:: TITLE SECTION
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.innerWidth <= 650) {
+    // When a thumbnail is clicked
+    $(".thumbnail .openSidebar").on("click", function () {
+      $(".project").hide(); // Hide thumbnails
+      $(".mobile-project-view").show(); // Show project details
+
+      // Optional: Load or inject content here
+      $(".video-container").html($("#videoContainer").clone());
+      $(".english-text").html($(".english").html());
+      $(".korean-text").html($(".korean").html());
+      $(".images-container").html($(".image").html());
+    });
+    const projectSection = document.querySelector(".project");
+    const projectView = document.querySelector(".mobile-project-view");
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const mobileTitle = document.querySelector(".mobile-title");
+    const aboutToggle = document.querySelector(".mobile-about-toggle");
+    const creditTitle = document.querySelector("#toggleCredit");
+
+    // Open mobile project view when clicking a thumbnail
+    thumbnails.forEach((thumb) => {
+      thumb.addEventListener("click", () => {
+        projectSection.style.display = "none";
+        projectView.style.display = "block";
+        mobileTitle.textContent =
+          creditTitle?.textContent.replace("▼", "").trim() || "Project";
+        aboutToggle.textContent = "×";
+
+        // Disable background scroll
+        document.body.classList.add("no-scroll");
+      });
+    });
+
+    // About toggle button
+    aboutToggle.addEventListener("click", () => {
+      if (projectView.style.display === "block") {
+        // If project view is open → close it
+        projectSection.style.display = "block";
+        projectView.style.display = "none";
+        mobileTitle.textContent = "Sunggu Hong";
+        aboutToggle.textContent = "+";
+        document.body.classList.remove("no-scroll");
+      } else {
+        // If in landing view → open About page (add your logic here)
+        const aboutDetail = document.getElementById("aboutDetail");
+        if (aboutDetail) aboutDetail.classList.toggle("show");
+      }
 
 // IMPRINT––––––––––––––––––––––––––––––––
 document.addEventListener("DOMContentLoaded", function () {

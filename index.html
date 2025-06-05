@@ -1,20 +1,93 @@
 <!DOCTYPE html>
 <html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>SUNGGU</title>
+    <meta name="description" content="A description of the page" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png" />
+    <!-- Points to an external CSS style sheet -->
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>SUNGGU</title>
-  <meta name="description" content="A description of the page" />
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png" />
-  <!-- Points to an external CSS style sheet -->
-  <link href="css/style.css" rel="stylesheet" media="only screen and (min-width: 651px)" />
+  <body>
+    <div class="project-canvas">
+      <div class="back"></div>
+      <div class="project">
+        <div class="mobile-header">
+          <div class="mobile-title">Sunggu Hong</div>
+          <div class="mobile-about-toggle">+</div>
+        </div>
 
-  <!-- SECOND CSS IF NEEDED -->
-  <link href="css/style_mobile.css" rel="stylesheet" media="only screen and (max-width: 650px)" />
-</head>
+        <div id="thumb-1" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/(7)©Lorenz Seidler.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-2" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(1)©Helmut Graf.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-3" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(1)©Joanna Pianka_esel.at.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-4" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(1)©Rania Moslam.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-5" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(1)©So Young Park.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-6" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(1)©Sunggu Hong.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-7" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(1)©Yewon Park.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-8" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(2)©So Young Park.JPG"
+            style="cursor: pointer"
+          />
+        </div>
+        <div id="thumb-9" class="thumbnail">
+          <img
+            class="openSidebar"
+            src="img/perview foto/(3)©Lorenz Seidler_esel.at.jpg"
+            style="cursor: pointer"
+          />
+        </div>
+
 
 <body>
   <div class="project-canvas">
@@ -143,6 +216,7 @@
               </div>
             </div>
           </div>
+
         </div>
         <div class="sidebar-resizer-handle">
           <div class="sidebar-resizer"></div>
@@ -245,6 +319,7 @@
                 here comes the cv text for sunggu, <br>
                 living working in vienna. as a performance artist
               </span>
+
             </div>
           </div>
           <div class="about-work-resizer"></div>
@@ -263,6 +338,19 @@
         </div>
       </div>
 
+
+      <!-- MOBILE SINGLE PROJECT VIEW -->
+      <div class="mobile-project-view" style="display: none">
+        <div class="mobile-project-content">
+          <!-- You can fill this dynamically or clone from sidebar -->
+          <div class="video-container"></div>
+          <div class="text-container">
+            <div class="english-text"></div>
+            <div class="korean-text"></div>
+          </div>
+          <div class="images-container"></div>
+        </div>
+      </div>
 
     </div>
   </div>
