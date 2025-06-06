@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < thumbnails.length - 1; i++) {
       const line = new LeaderLine(thumbnails[i], thumbnails[i + 1], {
         color: "#000",
-        size: 2,
+        size: 1.2,
         // size: 2.5,
         path: "magnetic",
         endPlug: "arrow2",
@@ -598,4 +598,14 @@ document.addEventListener("click", function (e) {
       console.log("ℹ️ About toggled");
     }
   }
+});
+
+
+document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+  thumbnail.addEventListener('mouseover', () => {
+    document.querySelector('.sidebar').classList.add('prev');
+  });
+  thumbnail.addEventListener('mouseleave', () => {
+    document.querySelector('.sidebar').classList.remove('prev');
+  });
 });

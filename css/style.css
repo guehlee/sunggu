@@ -67,7 +67,6 @@ body {
   margin: 2vw;
   z-index: 10;
   border-radius: 5px;
-
   transition: box-shadow 0.2s ease 0.05s, transform 0.1s ease !important;
 }
 
@@ -99,8 +98,15 @@ body {
   width: 70%;
   height: 100vh;
   display: flex;
-  transition: right 0.3s ease-in-out;
+  transition: right 0.3s ease-in-out, box-shadow 0.2s ease;
   z-index: 20;
+}
+
+.sidebar.prev{
+  position: fixed;
+  right: -68%;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.50);
+
 }
 
 body:has(.sidebar.show) .about {
