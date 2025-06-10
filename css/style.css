@@ -807,7 +807,7 @@ body.no-scroll {
 .mobile-project-content {
   flex: 0 0 95vw; /* changed from % to vw for reliable sizing */
   height: 100%;
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   scroll-snap-align: start;
 }
