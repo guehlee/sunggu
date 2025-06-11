@@ -524,10 +524,12 @@ document.addEventListener("click", function (e) {
     console.log("✅ Thumbnail clicked on mobile");
 
     // Switch views
-    document.querySelector(".project")?.style.setProperty("display", "none");
+    document
+      .querySelector(".project .projectCanvas")
+      ?.style.setProperty("display", "none");
     document
       .querySelector(".mobile-project-view")
-      ?.style.setProperty("display", "block");
+      ?.style.setProperty("display", "flex");
 
     // Update header
     const creditTitle = document.querySelector("#toggleCredit");
@@ -566,6 +568,12 @@ document.addEventListener("click", function (e) {
       ?.replaceChildren(
         ...document.querySelector(".image")?.cloneNode(true).childNodes
       );
+    document
+      .querySelector(".description-container")
+      ?.replaceChildren(
+        ...document.querySelector(".description-credit")?.cloneNode(true)
+          .childNodes
+      );
   }
 });
 
@@ -579,7 +587,7 @@ document.addEventListener("click", function (e) {
   const mobileTitle = document.querySelector(".mobile-title");
 
   // Are we in the mobile project view?
-  const isProjectOpen = projectView && projectView.style.display === "block";
+  const isProjectOpen = projectView && projectView.style.display === "flex";
 
   if (isProjectOpen) {
     // Close project view, go back to landing
@@ -600,12 +608,11 @@ document.addEventListener("click", function (e) {
   }
 });
 
-
-document.querySelectorAll('.thumbnail').forEach(thumbnail => {
-  thumbnail.addEventListener('mouseover', () => {
-    document.querySelector('.sidebar').classList.add('prev');
+document.querySelectorAll(".thumbnail").forEach((thumbnail) => {
+  thumbnail.addEventListener("mouseover", () => {
+    document.querySelector(".sidebar").classList.add("prev");
   });
-  thumbnail.addEventListener('mouseleave', () => {
-    document.querySelector('.sidebar').classList.remove('prev');
+  thumbnail.addEventListener("mouseleave", () => {
+    document.querySelector(".sidebar").classList.remove("prev");
   });
 });

@@ -776,7 +776,8 @@ body.no-scroll {
 .project {
   display: block !important;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
+  padding-top: 100px
 }
 
 .mobile-project-view {
@@ -798,10 +799,14 @@ body.no-scroll {
 
 .images-container img,
 .video-container iframe {
-  width: 20vw;
+  width: 90vw;
   height: auto;
   display: block;
   margin-bottom: 10px;
+}
+
+.video-container {
+  overflow-x: hidden;
 }
 
 .mobile-project-content {
@@ -810,7 +815,18 @@ body.no-scroll {
   padding: 10px;
   box-sizing: border-box;
   scroll-snap-align: start;
+  overflow-y: auto;
+  border-right: 1px solid #000000;
 }
+
+.description-container {
+  font-family: "Freeserif", serif;
+  font-size: 1rem;
+  line-height: 1.4rem;
+  overflow-y: auto;
+  display: block;
+}
+
 .english-text-container,
 .korean-text-container {
   font-family: "Freeserif", serif;
@@ -822,15 +838,16 @@ body.no-scroll {
 .korean-text-container {
   font-family: "NanumMyeongjo", serif;
   font-weight: bold;
+  border-right: none;
 }
 
 .sidebar,
 .sidebar-left,
 .about-detail,
 .about,
-.video,
+/* .video, */
 .text,
-.description,
+/* .description, */
 .sidebar-right,
 .back,
 .scroll-content.image {
