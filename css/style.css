@@ -26,6 +26,10 @@
   font-style: normal;
 }
 
+/* * {
+  background-color: rgb(115, 115, 115) !important;
+} */
+
 
 html,
 body {
@@ -33,10 +37,9 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  /* disables scrolling */
-
+  overflow: clip;
   font-family: "Freeserif";
+  position: relative;
 }
 
 .project-canvas {
@@ -64,21 +67,26 @@ body {
   width: 8vw;
   overflow: hidden;
   display: block;
-  margin: 2vw;
+  /* margin: 2vw; */
   z-index: 10;
   border-radius: 5px;
-  transition: box-shadow 0.2s ease 0.05s, transform 0.1s ease !important;
+  /* transition: box-shadow 0.2s ease 0.05s, transform 0.4s ease; */
+  
 }
 
 .thumbnail:not(:has(img[data-dragged="true"])) {
-  transition: left 0.3s ease, top 0.3s ease;
+  transition: left 0.3s ease, top 0.3s ease, box-shadow 0.2s ease 0.05s, transform 0.4s ease;
+}
+
+body:has(.thumbnail:has(img[data-dragged="true"])) .thumbnail {
+  pointer-events: none;
 }
 
 .thumbnail:hover {
   width: 8vw;
   overflow: hidden;
   display: block;
-  margin: 2vw;
+  /* margin: 2vw; */
   box-shadow: 0 0 40px 10px rgb(0, 0, 0);
   transform: scale(1.03);
 
@@ -98,7 +106,7 @@ body {
   width: 70%;
   height: 100vh;
   display: flex;
-  transition: right 0.3s ease-in-out, box-shadow 0.2s ease;
+  transition: right 0.2s ease-in-out, box-shadow 0.2s ease;
   z-index: 20;
 }
 
@@ -336,6 +344,11 @@ body:has(.sidebar.show) .about {
   -ms-overflow-style: none;
 
 }
+
+/* .scroll-wrapper{
+  position: inherit;
+  width: 50%;
+} */
 
 .image::-webkit-scrollbar,
 .korean::-webkit-scrollbar,
@@ -605,12 +618,13 @@ body:has(.sidebar.show) .about {
   width: 100%;
   border-bottom: 1px solid #000000;
   overflow: hidden;
+  width: 50%;
 }
 
 .about-exhibition {
   position: inherit;
   flex-grow: 1;
-  width: 100%;
+  width: 50%;
   border-bottom: 1px solid #000000;
   overflow: hidden;
 }

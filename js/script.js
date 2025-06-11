@@ -9,12 +9,13 @@ let oldHeight = window.innerHeight;
 
 let layoutState = "landing";
 
+
+// DRAG & CLICK LOGIK
+let isClicked = false;
+let isMoving = false;
+
 $(document).ready(function () {
   console.log("Ready!");
-
-  // DRAG & CLICK LOGIK
-  let isClicked = false;
-  let isMoving = false;
 
   $(".thumbnail")
     .on("mousedown", function () {
@@ -36,17 +37,16 @@ $(document).ready(function () {
         // if sidebar opens
         const newWidth =
           window.innerWidth - sidebar.getBoundingClientRect().width;
-        moveThumbnails(newWidth - 120, oldHeight);
-        event.stopPropagation();
+        // 120 because else the images might overflow on the edges of the container
+        moveThumbnails(newWidth, oldHeight);
+        // event.stopPropagation();
       } else {
         event.target.dataset.dragged = false;
       }
-      isClicked = false;
-      isMoving = false;
       console.log("mouseup - reset states");
     })
     .draggable({
-      containment: "body",
+      containment: [0, 0, oldWidth - 0.08 * window.innerWidth, oldHeight - 120],
       distance: 5,
 
       start: function (event, ui) {
@@ -57,7 +57,7 @@ $(document).ready(function () {
       },
 
       drag: function () {
-        console.log("Dragging...");
+        console.log("Dragging...", oldWidth, oldHeight);
         leaderLines.forEach((line) => line.position()); // 🔁 LeaderLines live aktualisieren
       },
 
@@ -168,8 +168,11 @@ function moveThumbnails(newWidth, newHeight) {
   thumbnails.forEach((thumbnail) => {
     const oldLeft = parseFloat(thumbnail.style.left);
     const oldTop = parseFloat(thumbnail.style.top);
-    thumbnail.style.left = oldLeft * widthRatio + "px";
-    thumbnail.style.top = oldTop * heightRatio + "px";
+    const elWidth = thumbnail.getBoundingClientRect().width
+    const elHeight = thumbnail.getBoundingClientRect().height
+    thumbnail.style.left = Math.min(oldLeft * widthRatio, newWidth - elWidth) + "px";
+    thumbnail.style.top = Math.min(oldTop * heightRatio, newHeight - elHeight) + "px";
+    $(thumbnail).draggable("option", "containment", [0, 0, newWidth - elWidth, newHeight - elHeight])
   });
   oldHeight = newHeight;
   oldWidth = newWidth;
@@ -262,23 +265,28 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         // about Detail opens
         const newHeight =
-          window.innerHeight * 0.8 - aboutDetail.getBoundingClientRect().height;
+          window.innerHeight - aboutDetail.getBoundingClientRect().height;
         moveThumbnails(oldWidth, newHeight);
       }
       aboutDetail.classList.toggle("show");
     });
 
     // Optional: close when clicking outside
-    document.addEventListener("click", function (e) {
+    document.addEventListener("mouseup", function (e) {
       if (
         aboutDetail.classList.contains("show") &&
         !aboutDetail.contains(e.target) &&
-        !about.contains(e.target)
+        !about.contains(e.target) &&
+        !isMoving
       ) {
         aboutDetail.classList.remove("show");
         // if about Detail closes
         moveThumbnails(oldWidth, window.innerHeight);
       }
+      isClicked = false
+      isMoving = false
+      const draggedElement = document.querySelector('[data-dragged=true]')
+      if(draggedElement) draggedElement.dataset.dragged = false
     });
   }
 });
@@ -498,12 +506,12 @@ function initLeaderLinesMobile() {
     }
 
     // Update on scroll
-    const scrollContainer = document.querySelector(".project");
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", () => {
-        leaderLines.forEach((line) => line.position());
-      });
-    }
+    // const scrollContainer = document.querySelector(".project");
+    // if (scrollContainer) {
+    //   scrollContainer.addEventListener("scroll", () => {
+    //     leaderLines.forEach((line) => line.position());
+    //   });
+    // }
   }
 }
 
