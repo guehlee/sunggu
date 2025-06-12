@@ -9,7 +9,6 @@ let oldHeight = window.innerHeight;
 
 let layoutState = "landing";
 
-
 // DRAG & CLICK LOGIK
 let isClicked = false;
 let isMoving = false;
@@ -168,11 +167,18 @@ function moveThumbnails(newWidth, newHeight) {
   thumbnails.forEach((thumbnail) => {
     const oldLeft = parseFloat(thumbnail.style.left);
     const oldTop = parseFloat(thumbnail.style.top);
-    const elWidth = thumbnail.getBoundingClientRect().width
-    const elHeight = thumbnail.getBoundingClientRect().height
-    thumbnail.style.left = Math.min(oldLeft * widthRatio, newWidth - elWidth) + "px";
-    thumbnail.style.top = Math.min(oldTop * heightRatio, newHeight - elHeight) + "px";
-    $(thumbnail).draggable("option", "containment", [0, 0, newWidth - elWidth, newHeight - elHeight])
+    const elWidth = thumbnail.getBoundingClientRect().width;
+    const elHeight = thumbnail.getBoundingClientRect().height;
+    thumbnail.style.left =
+      Math.min(oldLeft * widthRatio, newWidth - elWidth) + "px";
+    thumbnail.style.top =
+      Math.min(oldTop * heightRatio, newHeight - elHeight) + "px";
+    $(thumbnail).draggable("option", "containment", [
+      0,
+      0,
+      newWidth - elWidth,
+      newHeight - elHeight,
+    ]);
   });
   oldHeight = newHeight;
   oldWidth = newWidth;
@@ -283,10 +289,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // if about Detail closes
         moveThumbnails(oldWidth, window.innerHeight);
       }
-      isClicked = false
-      isMoving = false
-      const draggedElement = document.querySelector('[data-dragged=true]')
-      if(draggedElement) draggedElement.dataset.dragged = false
+      isClicked = false;
+      isMoving = false;
+      const draggedElement = document.querySelector("[data-dragged=true]");
+      if (draggedElement) draggedElement.dataset.dragged = false;
     });
   }
 });
@@ -523,6 +529,46 @@ window.addEventListener("resize", () => {
   initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
 });
 
+// –––––––––––––––––––––––––––––––––––––––
+// –––––––––––––––– MOBILE –––––––––––––––
+// –––––––––––––––––––––––––––––––––––––––
+
+// MOBILE:: LANDING PAGE / LEADERLINE ARRANGEMENT
+
+function initLeaderLinesMobile() {
+  // Only run on mobile
+  if (window.innerWidth <= 650) {
+    // Remove old lines
+    leaderLines.forEach((line) => line.remove());
+    leaderLines = [];
+
+    const thumbs = document.querySelectorAll(".thumbnail");
+
+    for (let i = 0; i < thumbs.length - 1; i++) {
+      const line = new LeaderLine(
+        LeaderLine.pointAnchor(thumbs[i], { x: "50%", y: "100%" }),
+        LeaderLine.pointAnchor(thumbs[i + 1], { x: "50%", y: "0%" }),
+        {
+          path: "straight",
+          startSocket: "bottom",
+          endSocket: "top",
+          color: "#000",
+          size: 2,
+        }
+      );
+      leaderLines.push(line);
+    }
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(initLeaderLinesMobile, 200); // Let layout settle first
+});
+
+window.addEventListener("resize", () => {
+  initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
+});
+
 // MOBILE:: SINGLE PAGE VIEW
 
 document.addEventListener("click", function (e) {
@@ -532,8 +578,9 @@ document.addEventListener("click", function (e) {
     console.log("✅ Thumbnail clicked on mobile");
 
     // Switch views
+    document.querySelector(".project")?.style.setProperty("display", "none");
     document
-      .querySelector(".project .projectCanvas")
+      .querySelector(".mobile-about-view")
       ?.style.setProperty("display", "none");
     document
       .querySelector(".mobile-project-view")
@@ -559,7 +606,9 @@ document.addEventListener("click", function (e) {
     document
       .querySelector(".video-container")
       ?.replaceChildren(
-        document.querySelector("#videoContainer")?.cloneNode(true)
+        document.querySelector("#videoContainer")?.cloneNode(true),
+        ...document.querySelector(".description-credit")?.cloneNode(true)
+          .childNodes
       );
     document
       .querySelector(".english-text-container")
@@ -576,43 +625,65 @@ document.addEventListener("click", function (e) {
       ?.replaceChildren(
         ...document.querySelector(".image")?.cloneNode(true).childNodes
       );
-    document
-      .querySelector(".description-container")
-      ?.replaceChildren(
-        ...document.querySelector(".description-credit")?.cloneNode(true)
-          .childNodes
-      );
   }
 });
+
+// MOBILE:: ABOUT PAGE VIEW
 
 document.addEventListener("click", function (e) {
   const aboutToggle = e.target.closest(".mobile-about-toggle");
 
-  if (!aboutToggle) return;
+  if (!aboutToggle || window.innerWidth > 650) return;
 
+  const aboutView = document.querySelector(".mobile-about-view");
   const projectView = document.querySelector(".mobile-project-view");
   const landingView = document.querySelector(".project");
   const mobileTitle = document.querySelector(".mobile-title");
 
-  // Are we in the mobile project view?
+  const isAboutOpen = aboutView && aboutView.style.display === "flex";
   const isProjectOpen = projectView && projectView.style.display === "flex";
 
   if (isProjectOpen) {
-    // Close project view, go back to landing
     projectView.style.display = "none";
     landingView.style.display = "block";
-    aboutToggle.textContent = "+"; // reset button
+    aboutToggle.textContent = "+";
     if (mobileTitle) mobileTitle.textContent = "Sunggu Hong";
-
     document.body.classList.remove("no-scroll");
     console.log("⬅️ Closed mobile project view");
+  } else if (!isAboutOpen) {
+    landingView.style.display = "none";
+    projectView.style.display = "none";
+    aboutView.style.display = "flex";
+    aboutToggle.textContent = "×";
+    document.body.classList.add("no-scroll");
+
+    document
+      .querySelector(".about-container")
+      ?.replaceChildren(
+        ...document.querySelector(".about-english")?.cloneNode(true).childNodes
+      );
+    document
+      .querySelector(".cv-container")
+      ?.replaceChildren(
+        ...document.querySelector(".cv-text")?.cloneNode(true).childNodes
+      );
+    document
+      .querySelector(".exhibition-container")
+      ?.replaceChildren(
+        ...document.querySelector(".exhibit-text")?.cloneNode(true).childNodes
+      );
+    document
+      .querySelector(".imprint-container")
+      ?.replaceChildren(
+        ...document.querySelector(".image")?.cloneNode(true).childNodes
+      );
   } else {
-    // Open About section (toggle .about-detail)
-    const aboutDetail = document.querySelector(".about-detail");
-    if (aboutDetail) {
-      aboutDetail.classList.toggle("show");
-      console.log("ℹ️ About toggled");
-    }
+    aboutView.style.display = "none";
+    landingView.style.display = "block";
+    aboutToggle.textContent = "+";
+    if (mobileTitle) mobileTitle.textContent = "Sunggu Hong";
+    document.body.classList.remove("no-scroll");
+    console.log("⬅️ Closed mobile about view");
   }
 });
 
