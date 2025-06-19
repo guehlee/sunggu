@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  
   // LeaderLines erstellen
   setTimeout(() => {
     for (let i = 0; i < thumbnails.length - 1; i++) {
@@ -158,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
 window.addEventListener("resize", () => {
   leaderLines.forEach((line) => line.position());
 });
+
 
 //PushThumbnails
 function moveThumbnails(newWidth, newHeight) {
@@ -195,6 +197,8 @@ function moveThumbnails(newWidth, newHeight) {
 window.addEventListener("resize", (event) => {
   moveThumbnails(window.innerWidth, window.innerHeight);
 });
+
+
 
 // HILFSFUNKTIONEN ––––––––––––––––––––––––––––––––––––––––
 
@@ -318,22 +322,29 @@ $(".sidebar-resizer").on("mousedown", function (e) {
     $(document).off("mousemove mouseup");
   });
 });
-
 $(".language-resizer").on("mousedown", function (e) {
   e.preventDefault();
+
   const english = $(".english");
   const korean = $(".korean");
   const languageStartX = e.pageX;
+
   const languageStartWidthEnglish = english.width();
   const languageStartWidthKorean = korean.width();
 
-  console.log(languageStartWidthEnglish);
-
+  // Die Berechnung für beide Seiten (Englisch und Koreanisch) anpassen
   $(document).on("mousemove", function (e) {
-    const newWidth = languageStartWidthEnglish + (e.pageX - languageStartX);
-    // korean.width(newWidth);
-    english.css("width", `${newWidth}px`);
+    // Berechne die neue Breite für Englisch
+    const newWidthEnglish = languageStartWidthEnglish + (e.pageX - languageStartX);
+    
+    // Aktualisiere die Breite des englischen Containers
+    english.css("width", `${newWidthEnglish}px`);
+    
+    // Berechne und aktualisiere die Breite des koreanischen Containers
+    const newWidthKorean = languageStartWidthKorean - (e.pageX - languageStartX);
+    korean.css("width", `${newWidthKorean}px`);
   });
+
   $(document).on("mouseup", function () {
     $(document).off("mousemove mouseup");
   });

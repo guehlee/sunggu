@@ -304,7 +304,7 @@ body:has(.sidebar.show) .about {
   z-index: 24;
 
   flex-grow: 1;
-  width: 50%;
+  /* width: 50% !important; */
 }
 
 .english {
@@ -323,7 +323,7 @@ body:has(.sidebar.show) .about {
   z-index: 22;
 
   flex-grow: 1;
-  width: 50%;
+  /* width: 50% !important; */
 }
 
 .korean {
@@ -601,7 +601,7 @@ body:has(.sidebar.show) .about {
   display: flex;
   flex-grow: 1;
   width: 50%;
-  border-bottom: 1px solid #000000;
+  /* border-bottom: 1px solid #000000; */
   height: auto;
   max-height: 100%;
   overflow: hidden;
@@ -614,7 +614,7 @@ body:has(.sidebar.show) .about {
   position: inherit;
   flex-grow: 1;
   width: 100%;
-  border-bottom: 1px solid #000000;
+  /* border-bottom: 1px solid #000000; */
   overflow: hidden;
   width: 50%;
 }
@@ -623,7 +623,7 @@ body:has(.sidebar.show) .about {
   position: inherit;
   flex-grow: 1;
   width: 50%;
-  border-bottom: 1px solid #000000;
+  /* border-bottom: 1px solid #000000; */
   overflow: hidden;
 }
 
