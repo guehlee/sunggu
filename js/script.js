@@ -16,6 +16,64 @@ let isMoving = false;
 $(document).ready(function () {
   console.log("Ready!");
 
+  //Hover Effekte
+   $(".english").hover(function() {
+    $(".language-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".language-resizer").css("box-shadow", "none");
+  });
+  $(".language-resizer").hover(function() {
+    $(".language-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".language-resizer").css("box-shadow", "none");
+  });
+
+  $(".korean").hover(function() {
+    $(".sidebar-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".sidebar-resizer").css("box-shadow", "none");
+  });
+$(".sidebar-resizer").hover(function() {
+    $(".sidebar-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".sidebar-resizer").css("box-shadow", "none");
+  });
+
+  $(".about-english").hover(function() {
+    $(".about-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".about-resizer").css("box-shadow", "none");
+  });
+$(".about-resizer").hover(function() {
+    $(".about-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".about-resizer").css("box-shadow", "none");
+  });
+
+ $(".about-korean").hover(function() {
+    $(".about-detail-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".about-detail-resizer").css("box-shadow", "none");
+  });
+$(".about-detail-resizer").hover(function() {
+    $(".about-detail-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".about-detail-resizer").css("box-shadow", "none");
+  });
+
+
+ $(".about-cv").hover(function() {
+    $(".about-work-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".about-work-resizer").css("box-shadow", "none");
+  });
+$(".about-work-resizer").hover(function() {
+    $(".about-work-resizer").css("box-shadow", "-5px 0 10px rgba(0, 0, 0, 0.50)");
+  }, function() {
+    $(".about-work-resizer").css("box-shadow", "none");
+  });
+
+
   $(".thumbnail")
     .on("mousedown", function () {
       isClicked = true;
