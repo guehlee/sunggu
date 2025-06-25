@@ -147,69 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
     videoContainer.classList.add("active");
   }
 
-
-
-//   // THUMBNAIL PLACEMENT + LEADERLINE
-//   const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
-//   const minDistance = 120;
-//   const placedPositions = [];
-//   const previousPosition = {
-//     x: window.innerWidth / 2,
-//     y: window.innerHeight / 2,
-//   };
-
-//   thumbnails.forEach((thumb) => {
-//     const width = thumb.offsetWidth || 80;
-//     const height = thumb.offsetHeight || 80;
-//     let position = null;
-//     let attempts = 0;
-
-//     do {
-//       position = getRandomPositionWithinBounds(previousPosition, width, height);
-//       attempts++;
-//     } while (
-//       !checkNoOverlapWithPlaced(
-//         position,
-//         placedPositions,
-//         minDistance,
-//         width,
-//         height
-//       ) &&
-//       attempts < 100
-//     );
-
-//     if (position) {
-//       setPosition(thumb, position);
-//       placedPositions.push({ ...position, width, height });
-//     }
-//   });
-
-  
-//   // LeaderLines erstellen
-//   setTimeout(() => {
-//     for (let i = 0; i < thumbnails.length - 1; i++) {
-//       const line = new LeaderLine(thumbnails[i], thumbnails[i + 1], {
-//         color: "#000",
-//         size: 1.2,
-//         // size: 2.5,
-//         path: "magnetic",
-//         endPlug: "arrow2",
-//         startPlug: "behind",
-//         dropShadow: false,
-//         animation: false,
-//         startSocket: "right", // oder "bottom", "left", "right"
-//         endSocket: "top",
-//       });
-//       leaderLines.push(line);
-//     }
-//   }, 200);
-// });
-
-
-
-// // LeaderLines bei Fenstergröße neu berechnen
-// window.addEventListener("resize", () => {
-//   leaderLines.forEach((line) => line.position());
 });
 
 
@@ -245,12 +182,6 @@ function moveThumbnails(newWidth, newHeight) {
   };
   update();
 }
-
-// window.addEventListener("resize", (event) => {
-//   moveThumbnails(window.innerWidth, window.innerHeight);
-// });
-
-
 
 // HILFSFUNKTIONEN ––––––––––––––––––––––––––––––––––––––––
 
@@ -365,8 +296,10 @@ function buildLines() {
 
 /* Komplettes Neuaufbauen */
 function resetLayout() {
+    document.body.classList.remove('thumbs-ready');
   randomizeThumbnails();
   buildLines();
+  document.body.classList.add('thumbs-ready');
 }
 
 /* Debounce-Helfer */
@@ -393,9 +326,24 @@ window.addEventListener('resize', debounce(() => {
 
 /* ––––– Initialisierung ––––– */
 window.addEventListener('load', () => {
-  resetLayout();     
-  document.body.classList.add('thumbs-ready');                          
+  resetLayout();                 // Thumbnails platzieren
+
+  requestAnimationFrame(() => {  // nächster Frame → Animation startet
+    document.body.classList.add('thumbs-ready');
+  });
 });
+
+/* Beim erneuten Reset (z. B. Breakpoint-Wechsel) ---- */
+function resetLayout() {
+  document.body.classList.remove('thumbs-ready'); // 1. Zustand zurücksetzen
+  randomizeThumbnails();
+  buildLines();
+
+  requestAnimationFrame(() => {                    // 2. Frame abwarten
+    document.body.classList.add('thumbs-ready');   // 3. Animation erneut
+  });
+}
+
 
 
 
@@ -672,13 +620,6 @@ function initLeaderLinesMobile() {
       leaderLines.push(line);
     }
 
-    // Update on scroll
-    // const scrollContainer = document.querySelector(".project");
-    // if (scrollContainer) {
-    //   scrollContainer.addEventListener("scroll", () => {
-    //     leaderLines.forEach((line) => line.position());
-    //   });
-    // }
   }
 }
 
@@ -686,49 +627,9 @@ window.addEventListener("DOMContentLoaded", () => {
   setTimeout(initLeaderLinesMobile, 200); // Let layout settle first
 });
 
-// window.addEventListener("resize", () => {
-//   initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
-// });
-
-// –––––––––––––––––––––––––––––––––––––––
-// –––––––––––––––– MOBILE –––––––––––––––
-// –––––––––––––––––––––––––––––––––––––––
-
-// MOBILE:: LANDING PAGE / LEADERLINE ARRANGEMENT
-
-// function initLeaderLinesMobile() {
-//   // Only run on mobile
-//   if (window.innerWidth <= 650) {
-//     // Remove old lines
-//     leaderLines.forEach((line) => line.remove());
-//     leaderLines = [];
-
-//     const thumbs = document.querySelectorAll(".thumbnail");
-
-//     for (let i = 0; i < thumbs.length - 1; i++) {
-//       const line = new LeaderLine(
-//         LeaderLine.pointAnchor(thumbs[i], { x: "50%", y: "100%" }),
-//         LeaderLine.pointAnchor(thumbs[i + 1], { x: "50%", y: "0%" }),
-//         {
-//           path: "straight",
-//           startSocket: "bottom",
-//           endSocket: "top",
-//           color: "#000",
-//           size: 2,
-//         }
-//       );
-//       leaderLines.push(line);
-//     }
-//   }
-// }
-
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(initLeaderLinesMobile, 200); // Let layout settle first
 });
-
-// window.addEventListener("resize", () => {
-//   initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
-// });
 
 // MOBILE:: SINGLE PAGE VIEW
 

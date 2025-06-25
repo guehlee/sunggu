@@ -72,13 +72,13 @@ body {
   border-radius: 5px;
   opacity: 0;
   filter: blur(48px);
-  
+  transition: opacity 6s ease, filter 6s ease;
+
 }
 /* first refresch thumbnail animation */
 body.thumbs-ready .thumbnail {
   opacity: 1;    
   filter: blur(0px) ;      
-  transition: opacity .001s ease, filter 6s ease;
 }
 
 
@@ -353,6 +353,7 @@ body:has(.sidebar.show) .about {
   box-sizing: border-box;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  overflow-x: hidden;
 
 }
 
