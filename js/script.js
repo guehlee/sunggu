@@ -147,75 +147,69 @@ document.addEventListener("DOMContentLoaded", function () {
     videoContainer.classList.add("active");
   }
 
-  // // CREDIT TOGGLE
-  // const title = document.getElementById("toggleCredit");
-  // const creditBox = document.getElementById("creditBox");
-  // if (title && creditBox) {
-  //   title.addEventListener("click", function () {
-  //     const isVisible = creditBox.classList.toggle("visible");
-  //     title.textContent = isVisible ? "Lizard Tale ▲" : "Lizard Tale ▼";
-  //   });
-  // }
 
-  // THUMBNAIL PLACEMENT + LEADERLINE
-  const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
-  const minDistance = 120;
-  const placedPositions = [];
-  const previousPosition = {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
-  };
 
-  thumbnails.forEach((thumb) => {
-    const width = thumb.offsetWidth || 80;
-    const height = thumb.offsetHeight || 80;
-    let position = null;
-    let attempts = 0;
+//   // THUMBNAIL PLACEMENT + LEADERLINE
+//   const thumbnails = Array.from(document.querySelectorAll(".thumbnail"));
+//   const minDistance = 120;
+//   const placedPositions = [];
+//   const previousPosition = {
+//     x: window.innerWidth / 2,
+//     y: window.innerHeight / 2,
+//   };
 
-    do {
-      position = getRandomPositionWithinBounds(previousPosition, width, height);
-      attempts++;
-    } while (
-      !checkNoOverlapWithPlaced(
-        position,
-        placedPositions,
-        minDistance,
-        width,
-        height
-      ) &&
-      attempts < 100
-    );
+//   thumbnails.forEach((thumb) => {
+//     const width = thumb.offsetWidth || 80;
+//     const height = thumb.offsetHeight || 80;
+//     let position = null;
+//     let attempts = 0;
 
-    if (position) {
-      setPosition(thumb, position);
-      placedPositions.push({ ...position, width, height });
-    }
-  });
+//     do {
+//       position = getRandomPositionWithinBounds(previousPosition, width, height);
+//       attempts++;
+//     } while (
+//       !checkNoOverlapWithPlaced(
+//         position,
+//         placedPositions,
+//         minDistance,
+//         width,
+//         height
+//       ) &&
+//       attempts < 100
+//     );
+
+//     if (position) {
+//       setPosition(thumb, position);
+//       placedPositions.push({ ...position, width, height });
+//     }
+//   });
 
   
-  // LeaderLines erstellen
-  setTimeout(() => {
-    for (let i = 0; i < thumbnails.length - 1; i++) {
-      const line = new LeaderLine(thumbnails[i], thumbnails[i + 1], {
-        color: "#000",
-        size: 1.2,
-        // size: 2.5,
-        path: "magnetic",
-        endPlug: "arrow2",
-        startPlug: "behind",
-        dropShadow: false,
-        animation: false,
-        startSocket: "right", // oder "bottom", "left", "right"
-        endSocket: "top",
-      });
-      leaderLines.push(line);
-    }
-  }, 200);
-});
+//   // LeaderLines erstellen
+//   setTimeout(() => {
+//     for (let i = 0; i < thumbnails.length - 1; i++) {
+//       const line = new LeaderLine(thumbnails[i], thumbnails[i + 1], {
+//         color: "#000",
+//         size: 1.2,
+//         // size: 2.5,
+//         path: "magnetic",
+//         endPlug: "arrow2",
+//         startPlug: "behind",
+//         dropShadow: false,
+//         animation: false,
+//         startSocket: "right", // oder "bottom", "left", "right"
+//         endSocket: "top",
+//       });
+//       leaderLines.push(line);
+//     }
+//   }, 200);
+// });
 
-// LeaderLines bei Fenstergröße neu berechnen
-window.addEventListener("resize", () => {
-  leaderLines.forEach((line) => line.position());
+
+
+// // LeaderLines bei Fenstergröße neu berechnen
+// window.addEventListener("resize", () => {
+//   leaderLines.forEach((line) => line.position());
 });
 
 
@@ -252,9 +246,9 @@ function moveThumbnails(newWidth, newHeight) {
   update();
 }
 
-window.addEventListener("resize", (event) => {
-  moveThumbnails(window.innerWidth, window.innerHeight);
-});
+// window.addEventListener("resize", (event) => {
+//   moveThumbnails(window.innerWidth, window.innerHeight);
+// });
 
 
 
@@ -307,6 +301,104 @@ function setPosition(element, position) {
 function getRandomRotation() {
   return Math.random() * 30 - 15;
 }
+
+//Mobile und desktop rerender:
+const BREAKPOINT = 650;           // px
+let isMobile = window.innerWidth <= BREAKPOINT;
+
+/* Alle LeaderLines löschen */
+function clearLines() {
+  leaderLines.forEach(l => l.remove());
+  leaderLines = [];
+}
+
+/* Thumbnails zufällig platzieren → nutzt DEINE vorhandene Random-Funktionen */
+function randomizeThumbnails() {
+  const thumbs  = Array.from(document.querySelectorAll('.thumbnail'));
+  const placed  = [];
+  thumbs.forEach(t => {
+    const w = t.offsetWidth  || 80;
+    const h = t.offsetHeight || 80;
+    let pos, tries = 0;
+    do { pos = getRandomPositionWithinBounds({x:innerWidth/2,y:innerHeight/2}, w, h); }
+    while (!checkNoOverlapWithPlaced(pos, placed, 120, w, h) && ++tries < 100);
+    if (pos) { setPosition(t, pos); placed.push({ ...pos, width:w, height:h }); }
+  });
+
+  /* Drag-Containment neu setzen */
+  thumbs.forEach(t => {
+    const w = t.getBoundingClientRect().width,
+          h = t.getBoundingClientRect().height;
+    $(t).draggable('option','containment',[0,0,innerWidth-w,innerHeight-h]);
+  });
+
+  oldWidth  = innerWidth;
+  oldHeight = innerHeight;
+}
+
+/* Neue LeaderLines je nach Viewport-Typ */
+function buildLines() {
+  clearLines();
+  const thumbs = document.querySelectorAll('.thumbnail');
+
+  if (isMobile) {
+    for (let i = 0; i < thumbs.length - 1; i++) {
+      leaderLines.push(
+        new LeaderLine(
+          LeaderLine.pointAnchor(thumbs[i],   {x:'50%',y:'100%'}),
+          LeaderLine.pointAnchor(thumbs[i+1], {x:'50%',y:'0%'}),
+          { path:'straight', color:'#000', size:2 }
+        )
+      );
+    }
+  } else {
+    for (let i = 0; i < thumbs.length - 1; i++) {
+      leaderLines.push(
+        new LeaderLine(thumbs[i], thumbs[i+1], {
+          color:'#000', size:1.2, path:'magnetic',
+          endPlug:'arrow2', startPlug:'behind'
+        })
+      );
+    }
+  }
+}
+
+/* Komplettes Neuaufbauen */
+function resetLayout() {
+  randomizeThumbnails();
+  buildLines();
+}
+
+/* Debounce-Helfer */
+const debounce = (fn, d = 120) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), d); }; };
+
+/* ––––– Resize-Handler ––––– */
+window.addEventListener('resize', debounce(() => {
+  const nowMobile = innerWidth <= BREAKPOINT;
+
+  /* 1) Thumbnails proportional schieben, solange Desktop bleibt */
+  if (!nowMobile) {                                //  NEW
+    moveThumbnails(innerWidth, innerHeight);       //  NEW
+  }                                                //  NEW
+
+  /* 2) Linien in jedem Fall neu positionieren */
+  leaderLines.forEach(l => l.position());
+
+  /* 3) Wechsel Mobile ⇔ Desktop? → komplettes Reset */
+  if (nowMobile !== isMobile) {
+    isMobile = nowMobile;
+    resetLayout();                                 // hier wird randomisiert + Lines neu
+  }
+}));
+
+/* ––––– Initialisierung ––––– */
+window.addEventListener('load', () => {
+  resetLayout();     
+  document.body.classList.add('thumbs-ready');                          
+});
+
+
+
 
 // SIDEBAR SCHLIEßEN BEIM KLICK AUF BACKGROUND
 const projectCanvas = document.querySelector(".back");
@@ -594,9 +686,9 @@ window.addEventListener("DOMContentLoaded", () => {
   setTimeout(initLeaderLinesMobile, 200); // Let layout settle first
 });
 
-window.addEventListener("resize", () => {
-  initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
-});
+// window.addEventListener("resize", () => {
+//   initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
+// });
 
 // –––––––––––––––––––––––––––––––––––––––
 // –––––––––––––––– MOBILE –––––––––––––––
@@ -604,39 +696,39 @@ window.addEventListener("resize", () => {
 
 // MOBILE:: LANDING PAGE / LEADERLINE ARRANGEMENT
 
-function initLeaderLinesMobile() {
-  // Only run on mobile
-  if (window.innerWidth <= 650) {
-    // Remove old lines
-    leaderLines.forEach((line) => line.remove());
-    leaderLines = [];
+// function initLeaderLinesMobile() {
+//   // Only run on mobile
+//   if (window.innerWidth <= 650) {
+//     // Remove old lines
+//     leaderLines.forEach((line) => line.remove());
+//     leaderLines = [];
 
-    const thumbs = document.querySelectorAll(".thumbnail");
+//     const thumbs = document.querySelectorAll(".thumbnail");
 
-    for (let i = 0; i < thumbs.length - 1; i++) {
-      const line = new LeaderLine(
-        LeaderLine.pointAnchor(thumbs[i], { x: "50%", y: "100%" }),
-        LeaderLine.pointAnchor(thumbs[i + 1], { x: "50%", y: "0%" }),
-        {
-          path: "straight",
-          startSocket: "bottom",
-          endSocket: "top",
-          color: "#000",
-          size: 2,
-        }
-      );
-      leaderLines.push(line);
-    }
-  }
-}
+//     for (let i = 0; i < thumbs.length - 1; i++) {
+//       const line = new LeaderLine(
+//         LeaderLine.pointAnchor(thumbs[i], { x: "50%", y: "100%" }),
+//         LeaderLine.pointAnchor(thumbs[i + 1], { x: "50%", y: "0%" }),
+//         {
+//           path: "straight",
+//           startSocket: "bottom",
+//           endSocket: "top",
+//           color: "#000",
+//           size: 2,
+//         }
+//       );
+//       leaderLines.push(line);
+//     }
+//   }
+// }
 
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(initLeaderLinesMobile, 200); // Let layout settle first
 });
 
-window.addEventListener("resize", () => {
-  initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
-});
+// window.addEventListener("resize", () => {
+//   initLeaderLinesMobile(); // Re-initialize when screen resizes (like rotating phone)
+// });
 
 // MOBILE:: SINGLE PAGE VIEW
 

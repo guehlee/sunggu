@@ -37,7 +37,8 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: clip;
+  overflow-x: hidden;
+  overflow-y: scroll;
   font-family: "Freeserif";
   position: relative;
 }
@@ -67,12 +68,19 @@ body {
   width: 8vw;
   overflow: hidden;
   display: block;
-  /* margin: 2vw; */
   z-index: 10;
   border-radius: 5px;
-  /* transition: box-shadow 0.2s ease 0.05s, transform 0.4s ease; */
+  opacity: 0;
+  filter: blur(48px);
   
 }
+/* first refresch thumbnail animation */
+body.thumbs-ready .thumbnail {
+  opacity: 1;    
+  filter: blur(0px) ;      
+  transition: opacity .001s ease, filter 6s ease;
+}
+
 
 .thumbnail:not(:has(img[data-dragged="true"])) {
   transition: left 0.3s ease, top 0.3s ease, box-shadow 0.2s ease 0.05s, transform 0.4s ease;
@@ -296,7 +304,7 @@ body:has(.sidebar.show) .about {
 
 .korean {
   position: relative;
-  padding: 0 10px;
+  padding: 0 15px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -309,8 +317,8 @@ body:has(.sidebar.show) .about {
   font-size: 0.9rem;
   line-height: 1.4rem;
   z-index: 24;
-
   flex-grow: 1;
+
   /* width: 50% !important; */
 }
 
@@ -333,9 +341,7 @@ body:has(.sidebar.show) .about {
   /* width: 50% !important; */
 }
 
-.korean {
-  padding: 10 10px;
-}
+
 
 /* SCROLL BAR */
 
@@ -737,16 +743,16 @@ body:has(.sidebar.show) .about {
 
 @media screen and (max-width: 650px) {
 html, body {
-  overflow-y: auto; 
-}
-
-body.no-scroll {
-  overflow: hidden;
+    height: auto !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .mobile-header {
   display: flex;
   width: 100%;
+  height: 10vh;
   justify-content: space-between;
   align-items: center;
   padding: 16px;
@@ -769,12 +775,14 @@ body.no-scroll {
   max-width: 100vw;
   overflow: hidden;
   padding: 10px;
+
 }
 
 .mobile-title,
 .mobile-about-toggle {
   max-width: 45%;
   overflow-wrap: break-word;
+  font-size: 5vw;
 }
 
 .thumbnail {
@@ -804,15 +812,30 @@ body.no-scroll {
 }
 
 .project {
+  height: auto !important;
   display: block !important;
   position: relative;
+  /* overflow-y: visible; */
+
+  padding-top: 10vh; /* Höhe des fixierten Headers */
+  min-height: calc(100vh - 10vh);
   overflow-y: auto;
-  padding-top: 100px
+
 }
+.project-canvas{
+    display: block;           /* oder flex + align-items:flex-start */
+    height: auto;             /* darf mitwachsen */
+  }
+
+  /* 2) Header-Höhe als Variable (aus dem letzten Beispiel) */
+  :root { --h: clamp(48px, 10vw, 80px); }
+
+  /* 3) Abstand exakt = Header-Höhe */
+  
 
 .mobile-project-view {
   position: fixed;
-  top: 54px;
+  top: 10vh;
   left: 0;
   height: calc(100vh - 54px);
   background: white;
@@ -899,7 +922,7 @@ body.no-scroll {
   position: fixed;
   top: 54px;
   left: 0;
-  height: calc(100vh - 54px);
+  height: calc(100vh - 10vh);
   background: white;
   z-index: 996;
 
@@ -955,3 +978,4 @@ body.no-scroll {
 }
 
 }
+
